@@ -6,18 +6,18 @@ module RAGE
 
   class Received
 
-    attr_accessor :by
-    attr_accessor :from
-    attr_accessor :date
-    attr_accessor :id
-    attr_accessor :via
+    attr_reader :by
+    attr_reader :from
+    attr_reader :date
+    attr_reader :id
+    attr_reader :via
 
-    def initialize
-      @by = nil
-      @from = nil
-      @date = nil
-      @id = nil
-      @via = nil
+    def initialize(by, from, date, id, via)
+      @by = by
+      @from = from
+      @date = date
+      @id = id
+      @via = via
     end
   end
 
@@ -129,23 +129,24 @@ module RAGE
         end
         received = params_elt.elements["received"]
         if received
-          env.received = Received.new
-          #	  env.received.by = received.elements["received-by"].elements["url"].text
-          env.received.by = received.elements["received-by"].attributes["value"]
+          by, from, date, id, via = nil, nil, nil, nil, nil
+          #	by = received.elements["received-by"].elements["url"].text
+          by = received.elements["received-by"].attributes["value"]
           if received.elements["received-from"]
-            #	    env.received.from = received.elements["received-from"].elements["url"].text
-            env.received.from = received.elements["received-from"].attributes["value"]
+            #	from = received.elements["received-from"].elements["url"].text
+            from = received.elements["received-from"].attributes["value"]
           end
-          env.received.date = received.elements["received-date"].attributes["value"]
-          if env.received.date
-            env.received.date = Time.parse(env.received.date)
+          date = received.elements["received-date"].attributes["value"]
+          if date
+            date = Time.parse(date)
           end
           if received.elements["received-id"]
-            env.received.id = received.elements["received-id"].attributes["value"]
+            id = received.elements["received-id"].attributes["value"]
           end
           if received.elements["received-via"]
-            env.received.via = received.elements["received-via"].attributes["value"]
+            via = received.elements["received-via"].attributes["value"]
           end
+          env.received = Received.new(by, from, date, id, via)
         end
       end
       env
