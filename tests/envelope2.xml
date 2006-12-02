@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<envelope>
+  <params index="1">
+  <to>
+    <agent-identifier>
+      <name>receiver@foo.com</name>
+      <addresses>
+        <url>http://foo.com/acc</url>
+      </addresses>
+      <resolvers>
+        <agent-identifier>
+          <name>resolver@bar.com</name>
+          <addresses>
+            <url>http://bar.com/acc1</url>
+            <url>http://bar.com/acc2</url>
+            <url>http://bar.com/acc3</url>
+          </addresses>
+        </agent-identifier>
+      </resolvers>
+    </agent-identifier>
+  </to>
+  <from>
+    <agent-identifier>
+      <name>sender@bar.com</name>
+      <addresses>
+        <url>http://bar.com/acc</url>
+      </addresses>
+      <resolvers>
+        <agent-identifier>
+          <name>resolver@foobar.com</name>
+          <addresses>
+            <url>http://foobar.com/acc1</url>
+            <url>http://foobar.com/acc2</url>
+            <url>http://foobar.com/acc3</url>
+          </addresses>
+        </agent-identifier>
+      </resolvers>
+    </agent-identifier>
+  </from>
+  <comments>No comments!</comments>
+  <acl-representation>fipa.acl.rep.xml.std</acl-representation>
+  <payload-encoding>US-ASCII</payload-encoding>
+  <date>20000508T042651481</date>
+  <intended-receiver>
+    <agent-identifier>
+      <name>intendedreceiver@foobar.com</name>
+      <addresses>
+        <url>http://foobar.com/acc1</url>
+        <url>http://foobar.com/acc2</url>
+        <url>http://foobar.com/acc3</url>
+      </addresses>
+      <resolvers>
+        <agent-identifier>
+          <name>resolver@foobar.com</name>
+          <addresses>
+            <url>http://foobar.com/acc1</url>
+            <url>http://foobar.com/acc2</url>
+            <url>http://foobar.com/acc3</url>
+          </addresses>
+          <resolvers>
+            <agent-identifier>
+              <name>resolver@foobar.com</name>
+              <addresses>
+                <url>http://foobar.com/acc1</url>
+                <url>http://foobar.com/acc2</url>
+                <url>http://foobar.com/acc3</url>
+              </addresses>      
+            </agent-identifier>
+          </resolvers>
+        </agent-identifier>
+      </resolvers>
+    </agent-identifier>
+  </intended-receiver>
+  <received>
+    <received-by value="http://foo.com/acc" />
+    <received-from value="http://foobar.com/acc" />
+    <received-date value="20000508T042651481" />
+    <received-id value="123456789" />
+    <received-via value="http://bar.com/acc" />
+  </received>
+  </params>
+</envelope>
+

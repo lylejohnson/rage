@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<envelope>
+  <params index="1">
+    <to>
+      <agent-identifier>
+        <name>receiver@foo.com</name>
+        <addresses>
+          <url>http://foo.com/acc</url>
+        </addresses>
+      </agent-identifier>
+    </to>
+    <from>
+      <agent-identifier>
+        <name>sender@bar.com</name>
+        <addresses>
+          <url>http://bar.com/acc</url>
+        </addresses>
+      </agent-identifier>
+    </from>
+    <acl-representation>fipa.acl.rep.xml.std</acl-representation>
+    <date>20000508T042651481</date>
+    <received >
+      <received-by value="http://foo.com/acc" />
+      <received-date value="20000508T042651481" />
+      <received-id value="123456789" />
+    </received>
+  </params>
+</envelope>
+

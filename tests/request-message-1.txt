@@ -1,0 +1,24 @@
+(request
+  :sender
+    (agent-identifier
+      :name dummy@foo.com
+      :addresses (sequence iiop://foo.com/acc))
+  :receiver (set
+    (agent-identifier
+      :name ams@foo.com
+      :addresses (sequence iiop://foo.com/acc)))
+  :language fipa-sl0
+  :protocol fipa-request
+  :ontology fipa-agent-management
+  :content
+    "((action
+      (agent-identifier
+        :name ams@foo.com
+        :addresses (sequence iiop://foo.com/acc))
+      (register
+        (ams-agent-description
+          :name
+            (agent-identifier
+              :name dummy@foo.com
+              :addresses (sequence iiop://foo.com/acc))
+          :state active))))")

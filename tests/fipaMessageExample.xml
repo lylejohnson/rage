@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<fipa-message act="confirm" conversation-id="some conversation id">
+
+ <receiver>
+  <agent-identifier>
+   <name id="some agent id" />
+   <addresses>
+    <url href="http://foo.com/receiver" />
+   </addresses>
+   <user-defined>
+    blabla user-defined1
+   </user-defined>
+  </agent-identifier>
+ </receiver>
+
+ <sender>
+  <agent-identifier>
+   <name refid="some ref to an agent id" />
+
+   <addresses>
+    <url href="http://foo.com/sender" />
+   </addresses>
+   <user-defined>
+     blabla user-defined2
+   </user-defined>
+  </agent-identifier>
+ </sender>
+
+ <content href="some contenturl">
+  parsable content..
+ </content>
+
+ <language href="some languageurl">
+  some language, e.g. klingon
+ </language>
+
+ <encoding href="some encoding url">
+  some content encoding, e.g. gzip
+ </encoding>
+
+ <ontology href="some ontologi url">
+  some ontology..
+ </ontology>
+
+ <protocol href="some protocol url">
+  some protocol desc.
+ </protocol>
+
+ <reply-with href="reply-with url">
+  replying with..
+ </reply-with>
+
+ <in-reply-to href="in reply-to url">
+  in reply to ..?
+ </in-reply-to>
+
+ <reply-by time="sometime.." href="some reply-by url" />
+
+ <reply-to>
+  <agent-identifier>
+   <name refid="some ref to an agent id that receives.." />
+
+   <addresses>
+    <url href="http://foo.com/reply-to" />
+   </addresses>
+   <user-defined>
+     blabla user-defined2
+   </user-defined>
+  </agent-identifier>
+ </reply-to> 
+
+ <conversation-id href="some conversation id url">
+  some conversation.. id
+ </conversation-id>
+
+</fipa-message>
