@@ -12,10 +12,10 @@ class TC_Envelope < Test::Unit::TestCase
     assert_equal("http://foo.com/acc", env.receiver.address)
     assert_equal("sender@bar.com", env.sender.name)
     assert_equal("http://bar.com/acc", env.sender.address)
-    assert_equal("20000508T042651481", env.date)
+    assert_equal(Time.parse("20000508T042651481"), env.date)
     assert_equal("fipa.acl.rep.xml.std", env.acl_representation)
     assert_equal("http://foo.com/acc", env.received.by)
-    assert_equal("20000508T042651481", env.received.date)
+    assert_equal(Time.parse("20000508T042651481"), env.received.date)
     assert_equal("123456789", env.received.id)
   end
 
@@ -49,7 +49,7 @@ class TC_Envelope < Test::Unit::TestCase
     assert_equal("No comments!", env.comments)
     assert_equal("fipa.acl.rep.xml.std", env.acl_representation)
     assert_equal("US-ASCII", env.payload_encoding)
-    assert_equal("20000508T042651481", env.date)
+    assert_equal(Time.parse("20000508T042651481"), env.date)
 
     assert_equal(1, env.intended_receivers.length)
     intended_receiver = env.intended_receiver
@@ -68,7 +68,7 @@ class TC_Envelope < Test::Unit::TestCase
 
     assert_equal("http://foo.com/acc", env.received.by)
     assert_equal("http://foobar.com/acc", env.received.from)
-    assert_equal("20000508T042651481", env.received.date)
+    assert_equal(Time.parse("20000508T042651481"), env.received.date)
     assert_equal("123456789", env.received.id)
     assert_equal("http://bar.com/acc", env.received.via)
   end
