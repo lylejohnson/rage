@@ -1,6 +1,7 @@
 require 'rage/aid'
 
 module RAGE
+
   class AgentManagementSystem
     #
     # Map of AIDs to agents.
@@ -21,6 +22,8 @@ module RAGE
       agent.aid = AID.new(name)
       agents[agent.aid] = agent
     end
-  end
-end
+    
+  end # class AgentManagementSystem
+  
+end # module RAGE
 

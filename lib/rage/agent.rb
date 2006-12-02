@@ -25,6 +25,7 @@ module RAGE
   # adding specific behaviors as needed and exploiting Agent class capabilities.
   #
   class Agent
+
     # The agent identifier (AID) for this agent.
     attr_accessor :aid
     
@@ -173,6 +174,8 @@ module RAGE
         # something
       end
     end
-  end
-end
+    
+  end # class Agent
+
+end # module RAGE
 

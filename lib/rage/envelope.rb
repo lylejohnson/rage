@@ -6,11 +6,7 @@ module RAGE
 
   class Received
 
-    attr_reader :by
-    attr_reader :from
-    attr_reader :date
-    attr_reader :id
-    attr_reader :via
+    attr_reader :by, :from, :date, :id, :via
 
     def initialize(by, from, date, id, via)
       @by = by
@@ -19,7 +15,8 @@ module RAGE
       @id = id
       @via = via
     end
-  end
+
+  end # class Received
 
   class Envelope
 
@@ -276,6 +273,8 @@ module RAGE
       end
       doc
     end
-  end
-end
+    
+  end # class Envelope
+
+end # module RAGE
 

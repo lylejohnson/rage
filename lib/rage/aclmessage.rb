@@ -2,14 +2,18 @@ require 'rage/aid'
 require 'rage/xmlcodec'
 
 module RAGE
+
   class ReplyBy
-    attr_accessor :time
-    attr_accessor :url
+
+    attr_reader :time
+    attr_reder :url
+
     def initialize(tm, href)
       @time = tm
       @url = href
     end
-  end
+
+  end # class ReplyBy
 
   #
   # Represents a FIPA ACL message.
@@ -127,6 +131,8 @@ module RAGE
     def to_xml
       RAGE::XMLCodec.new.encode(self)
     end
-  end
-end
+    
+  end # class ACLMessage
+  
+end # module RAGE
 

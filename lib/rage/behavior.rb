@@ -1,5 +1,7 @@
 module RAGE
+
   class Behavior
+
     # The agent this behavior belongs to.
     attr_reader :agent
 
@@ -40,7 +42,8 @@ module RAGE
     #
     def done?
     end
-  end
+    
+  end # class Behavior
   
   #
   # An atomic behavior.
@@ -48,13 +51,15 @@ module RAGE
   # task and cannot be interrupted.
   #
   class SimpleBehavior < Behavior
+
     #
     # Return an initialized CompositeBehavior instance.
     #
     def initialize(agent)
       super(agent)
     end
-  end
+    
+  end # class SimpleBehavior
 
   #
   # Atomic behavior that must be executed forever.
@@ -62,6 +67,7 @@ module RAGE
   # behaviors that keep executing continuously (e.g. simple reactive behaviors).
   #
   class CyclicBehavior < SimpleBehavior
+    
     #
     # Return an initialized CyclicBehavior instance.
     #
@@ -76,7 +82,8 @@ module RAGE
     def done?
       false
     end
-  end
+    
+  end # class CyclicBehavior
 
   #
   # This abstract class implements a behavior that periodically executes a
@@ -85,6 +92,7 @@ module RAGE
   # be periodically executed into it.
   #
   class TickerBehavior < SimpleBehavior
+    
     #
     # Return an initialized TickerBehavior instance.
     #
@@ -98,7 +106,8 @@ module RAGE
     #
     def tick
     end
-  end
+    
+  end # class TickerBehavior
 
   #
   # An abstract superclass for behaviors composed by many parts.
@@ -109,12 +118,15 @@ module RAGE
   # when running child behaviors.
   #
   class CompositeBehavior < Behavior
+    
     #
     # Return an initialized CompositeBehavior instance.
     #
     def initialize(agent)
       super(agent)
     end
-  end
-end
+    
+  end # class CompositeBehavior
+
+end # module RAGE
 

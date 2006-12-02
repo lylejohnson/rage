@@ -3,7 +3,9 @@ require 'rage/aid'
 require 'rexml/document'
 
 module RAGE
+
   class XMLCodec
+
     def agent_identifier_from_xml(element)
       agentId = AID.new
       name_elt = element.elements["name"]
@@ -14,15 +16,15 @@ module RAGE
       end
       addresses_elt = element.elements["addresses"]
       if addresses_elt
-	addresses_elt.each_element("url") do |url_elt|
-	  agentId.addresses << url_elt.attributes["href"]
-	end
+        addresses_elt.each_element("url") do |url_elt|
+          agentId.addresses << url_elt.attributes["href"]
+        end
       end
       resolvers_elt = element.elements["resolvers"]
       if resolvers_elt
-	resolvers_elt.each_element("agent-identifier") do |aid_elt|
-	  agentId.resolvers << agent_identifier_from_xml(aid_elt)
-	end
+        resolvers_elt.each_element("agent-identifier") do |aid_elt|
+          agentId.resolvers << agent_identifier_from_xml(aid_elt)
+        end
       end
       agentId
     end
@@ -67,8 +69,8 @@ module RAGE
       doc << REXML::XMLDecl.default
       root = doc.add_element("fipa-message", { "act" => msg.performative, "conversation-id" => msg.conversation_id })
       msg.receivers.each do |recv|
-	el = root.add_element("receiver")
-	el.add_element("agent-identifier")
+        el = root.add_element("receiver")
+        el.add_element("agent-identifier")
       end
       el = root.add_element("sender")
       el.add_element("agent-identifier")
@@ -88,6 +90,8 @@ module RAGE
       root.add_element("user-defined")
       doc.to_s
     end
-  end
-end
+
+  end # class XMLCodec
+
+end # module RAGE
 

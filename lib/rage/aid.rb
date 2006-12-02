@@ -1,5 +1,7 @@
 module RAGE
+
   class AID
+
     #
     # The symbolic name of the agent.
     #
@@ -66,6 +68,8 @@ module RAGE
         nil
       end
     end
-  end
-end
+    
+  end # class AID
+  
+end # module RAGE
 
