@@ -16,7 +16,8 @@ class TC_DFAgentDescription < Test::Unit::TestCase
       :name => 'description-delivery-1',
       :type => 'description-delivery',
       :ontologies => [ 'traffic-surveillance-domain' ],
-      :properties => { 'camera-id' => 'camera1', 'baud-rate' => '1' }
+      :properties => { 'camera-id' => 'camera1', 'baud-rate' => '1' },
+      :languages => [ 'fipa-sl', 'fipa-sl1' ]
     )
     service2 = RAGE::ServiceDescription.new(
       :name => 'agent-feedback-information-1',
@@ -38,7 +39,7 @@ class TC_DFAgentDescription < Test::Unit::TestCase
       :type => 'description-delivery',
       :ontologies => [ 'traffic-surveillance-domain' ],
       :properties => { 'camera-id' => 'camera1' },
-      :languages => [ 'fipa-sl', 'fipa-sl1' ]
+      :languages => [ 'fipa-sl' ]
     )
     pattern = RAGE::DFAgentDescription.new(
       :services => [ desired_service ]

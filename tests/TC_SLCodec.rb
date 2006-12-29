@@ -2,6 +2,7 @@ require 'test/unit'
 require 'rage/slcodec'
 
 class TC_SLCodec < Test::Unit::TestCase
+
   def test_decode
     src = <<END
       (
@@ -21,5 +22,6 @@ END
     assert_kind_of(RAGE::Proposition, proposition)
     assert_equal("priority", proposition)
   end
+
 end
 

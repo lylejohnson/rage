@@ -2,9 +2,7 @@ module RAGE
 
   class AgentIdentifier
 
-    #
-    # The symbolic name of the agent.
-    #
+    # The symbolic name of the agent (a string)
     attr_reader :name
 
     #
@@ -77,7 +75,10 @@ module RAGE
       pattern.resolvers.each do |resolver_pattern|
         this_pattern_matched = false
         self.resolvers.each do |resolver|
-          this_pattern_matched = true if resolver.matches? resolver_pattern
+          if resolver.matches? resolver_pattern
+            this_pattern_matched = true
+            break
+          end
         end
         return false unless this_pattern_matched
       end

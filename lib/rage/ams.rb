@@ -2,6 +2,42 @@ require 'rage/aid'
 
 module RAGE
 
+  class APDescription
+    
+    # The name of the Agent Platform (a string)
+    attr_reader :name
+    
+    # The set of services provided by this AP to the resident agents (a set of APService instances)
+    attr_reader :services
+    
+    # Returns an initialized APDescription instance
+    def initialize(params={})
+      @name = params[:name]
+      @services = params[:services] || []
+    end
+    
+  end
+  
+  class APService
+    
+    # The name of the AP service (a string)
+    attr_reader :name
+    
+    # The type of the AP service (a string)
+    attr_reader :type
+    
+    # A list of the addresses of the service (a sequence of URLs)
+    attr_reader :addresses
+    
+    # Return an initialized APService instance
+    def initialize(params={})
+      @name = params[:name]
+      @type = params[:type]
+      @addresses = params[:addresses] || []
+    end
+  
+  end
+
   class AMSAgentDescription
 
     # The identifier of the agent (an AgentIdentifier)
@@ -13,7 +49,7 @@ module RAGE
     # The life cycle state of the agent (one of :initiated, :active, :suspended, :waiting or :transit)
     attr_reader :state
 
-    def initialize(params)
+    def initialize(params={})
       @name = params[:name]
       @ownership = params[:ownership]
       @state = params[:state]
@@ -54,6 +90,11 @@ module RAGE
         matches << agent_description if agent_description.matches? pattern
       end
       matches
+    end
+    
+    # Return the platform profile of the AP for this AMS
+    def get_description
+      APDescription.new
     end
     
   end # class AgentManagementSystem

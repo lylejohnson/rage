@@ -24,18 +24,40 @@ module RAGE
     attr_reader :properties
     
     # Return an initialized service description instance
-    def initialize(params)
+    def initialize(params={})
       @name = params[:name]
       @type = params[:type]
-      @protocols = params[:protocols]
-      @ontologies = params[:ontologies]
-      @languages = params[:languages]
-      @ownership = params[:ownership]
-      @properties = params[:properties]
+      @protocols = params[:protocols] || []
+      @ontologies = params[:ontologies] || []
+      @languages = params[:languages] || []
+      @ownership = params[:ownership] || []
+      @properties = params[:properties] || {}
     end
     
     # Return +true+ if this service description matches the pattern.
     def matches?(pattern)
+      return false if (pattern.name && self.name != pattern.name)
+      return false if (pattern.type && self.type != pattern.type)
+      pattern.protocols.each do |protocol|
+        return false unless self.protocols.include? protocol
+      end
+      pattern.ontologies.each do |ontology|
+        return false unless self.ontologies.include? ontology
+      end
+      pattern.languages.each do |language|
+        return false unless self.languages.include? language
+      end
+      return false if (pattern.ownership && self.ownership != pattern.ownership)
+      pattern.properties.each do |kp, vp|
+        this_property_matched = false
+        self.properties.each do |k, v|
+          if ((k == kp) && (v == vp))
+            this_property_matched = true
+            break
+          end
+        end
+        return false unless this_property_matched
+      end
       true
     end
 
@@ -62,7 +84,7 @@ module RAGE
     attr_reader :lease_time
     
     # Return an initialized DFAgentDescription instance
-    def initialize(params)
+    def initialize(params={})
       @name = params[:name]
       @services = params[:services] || []
       @protocols = params[:protocols] || []
@@ -72,9 +94,7 @@ module RAGE
     end
 
     def matches?(pattern)
-      if pattern.name
-        return false unless self.name.matches? pattern.name
-      end
+      return false if (pattern.name && !self.name.matches?(pattern.name))
       pattern.services.each do |service_pattern|
         this_pattern_matched = false
         self.services.each do |service|
