@@ -23,21 +23,22 @@ module RAGE
     private
 
     def Envelope.agent_identifier_from_xml(element)
-      agentId = AID.new
-      agentId.name = element.elements["name"].text
+      name = element.elements["name"].text
       addresses_elt = element.elements["addresses"]
+      addresses = []
       if addresses_elt
         addresses_elt.each_element("url") do |url_elt|
-          agentId.addresses << url_elt.text
+          addresses << url_elt.text
         end
       end
       resolvers_elt = element.elements["resolvers"]
+      resolvers = []
       if resolvers_elt
         resolvers_elt.each_element("agent-identifier") do |aid_elt|
-          agentId.resolvers << agent_identifier_from_xml(aid_elt)
+          resolvers << agent_identifier_from_xml(aid_elt)
         end
       end
-      agentId
+      AgentIdentifier.new(:name => name, :addresses => addresses, :resolvers => resolvers)
     end
 
     public
@@ -69,11 +70,11 @@ module RAGE
     end
 
     def add_receiver(name, address)
-      self.receivers << AID.new(name, address)
+      self.receivers << AgentIdentifier.new(:name => name, :addreses => [address])
     end
 
     def add_sender(name, address)
-      self.sender = AID.new(name, address)
+      self.sender = AgentIdentifier.new(:name => name, :addresses => [address])
     end
 
     #

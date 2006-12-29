@@ -7,26 +7,32 @@ module RAGE
   class XMLCodec
 
     def agent_identifier_from_xml(element)
-      agentId = AID.new
+      name = nil
       name_elt = element.elements["name"]
       if name_elt.attributes["id"]
-        agentId.name = name_elt.attributes["id"]
+        name = name_elt.attributes["id"]
       else
-        agentId.name = name_elt.attributes["refid"]
+        name = name_elt.attributes["refid"]
       end
+      addresses = []
       addresses_elt = element.elements["addresses"]
       if addresses_elt
         addresses_elt.each_element("url") do |url_elt|
-          agentId.addresses << url_elt.attributes["href"]
+          addresses << url_elt.attributes["href"]
         end
       end
       resolvers_elt = element.elements["resolvers"]
+      resolvers = []
       if resolvers_elt
         resolvers_elt.each_element("agent-identifier") do |aid_elt|
-          agentId.resolvers << agent_identifier_from_xml(aid_elt)
+          resolvers << agent_identifier_from_xml(aid_elt)
         end
       end
-      agentId
+      RAGE::AgentIdentifier.new(
+        :name => name,
+        :addresses => addresses,
+        :resolvers => resolvers
+      )
     end
 
     #

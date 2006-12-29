@@ -72,14 +72,15 @@ module RAGE
     end
 
     def matches?(pattern)
+      if pattern.name
+        return false unless self.name.matches? pattern.name
+      end
       pattern.services.each do |service_pattern|
         this_pattern_matched = false
         self.services.each do |service|
-          if service.matches? service_pattern
-            this_pattern_matched = true
-          end
+          this_pattern_matched = true if service.matches? service_pattern
         end
-        return false if !this_pattern_matched
+        return false unless this_pattern_matched
       end
       pattern.protocols.each do |protocol|
         return false unless self.protocols.include? protocol
@@ -114,21 +115,21 @@ module RAGE
 
     # Register an agent's capabilities, where _entry_ is a DF
     # Agent Description.
-    def register(entry)
-      unless @entries.key? entry.name
-        @entries[entry.name] = entry
+    def register(agent_description)
+      unless @entries.key? agent_description.name
+        @entries[agent_description.name] = agent_description
       else
         raise RuntimeError, "agent already registered"
       end
     end
     
-    def deregister(entry)
-      @entries.delete(entry.name)
+    def deregister(agent_description)
+      @entries.delete(agent_description.name)
     end
     
-    def modify(entry)
-      if @entries.key? entry.name
-        @entires[entry.name] = entry
+    def modify(agent_description)
+      if @entries.key? agent_description.name
+        @entires[agent_description.name] = agent_description
       else
         raise RuntimeError, "no such agent is registered"
       end
@@ -139,8 +140,8 @@ module RAGE
     #
     def search(pattern, search_constraints=nil)
       matches = []
-      @entries.each do |aid, entry|
-        matches << entry if entry.matches? pattern
+      @entries.each do |aid, agent_description|
+        matches << agent_description if agent_description.matches? pattern
       end
       matches
     end

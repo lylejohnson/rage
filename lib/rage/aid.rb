@@ -12,7 +12,7 @@ module RAGE
     #
     def initialize(params)
       @name = params[:name]
-      @addresses = params[:addresses]
+      @addresses = params[:addresses] || []
       @resolvers = []
     end
     
@@ -65,6 +65,21 @@ module RAGE
         resolvers.first
       else
         nil
+      end
+    end
+    
+    # Return +true+ if this agent identifier matches the pattern.
+    def matches?(pattern)
+      return false if (pattern.name && self.name != pattern.name)
+      pattern.addresses.each do |address_pattern|
+        return false unless self.addresses.include? address_pattern
+      end
+      pattern.resolvers.each do |resolver_pattern|
+        this_pattern_matched = false
+        self.resolvers.each do |resolver|
+          this_pattern_matched = true if resolver.matches? resolver_pattern
+        end
+        return false unless this_pattern_matched
       end
     end
     

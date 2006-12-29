@@ -6,7 +6,7 @@ module RAGE
   class ReplyBy
 
     attr_reader :time
-    attr_reder :url
+    attr_reader :url
 
     def initialize(tm, href)
       @time = tm

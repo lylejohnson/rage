@@ -5,8 +5,8 @@ class TC_StringCodec < Test::Unit::TestCase
   def test_encode
     msg = RAGE::ACLMessage.new
     msg.performative = "request"
-    msg.sender = RAGE::AID.new("dummy@foo.com", "iiop://foo.com/acc")
-    msg.receivers << RAGE::AID.new("ams@foo.com", "iiop://foo.com/acc")
+    msg.sender = RAGE::AgentIdentifier.new(:name => "dummy@foo.com", :addresses => ["iiop://foo.com/acc"])
+    msg.receivers << RAGE::AgentIdentifier.new(:name => "ams@foo.com", :addresses => ["iiop://foo.com/acc"])
     msg.language = "fipa-sl0"
     msg.protocol = "fipa-request"
     msg.ontology = "fipa-agent-management"

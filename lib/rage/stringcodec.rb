@@ -12,25 +12,30 @@ module RAGE
   class StringCodec
 
     def decode_agent_identifier(node)
-      aid = AID.new
       node.values.shift # agent-identifier
       node.values.shift # :name
-      aid.name = node.values.shift
+      name = node.values.shift
+      addresses = []
+      resolvers = []
       while !node.values.empty?
         key = node.values.shift
         case key
         when ":addresses"
           seq = node.values.shift
           seq.values.shift # sequence
-          seq.values.each { |uri| aid.addresses << uri }
+          seq.values.each { |uri| addresses << uri }
         when ":resolvers"
           set = node.values.shift
-          set.values.each { |v| aid.resolvers << decode_agent_identifier(v) }
-          default
+          set.values.each { |v| resolvers << decode_agent_identifier(v) }
+        default
           raise RuntimeError
         end
       end
-      aid
+      AgentIdentifier.new(
+        :name => name,
+        :addresses => addresses,
+        :resolvers => resolvers
+      )
     end
 
     private :decode_agent_identifier
