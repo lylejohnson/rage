@@ -13,7 +13,7 @@ module RAGE
     def initialize(params)
       @name = params[:name]
       @addresses = params[:addresses] || []
-      @resolvers = []
+      @resolvers = params[:resolvers] || []
     end
     
     #

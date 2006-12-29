@@ -22,7 +22,6 @@ class TC_Envelope < Test::Unit::TestCase
   def test_from_xml2
     doc = REXML::Document.new(File.open("envelope2.xml"))
     env = RAGE::Envelope.from_xml(doc)
-
     assert_equal(1, env.receivers.length)
     receiver = env.receiver
     assert_equal("receiver@foo.com", receiver.name)
