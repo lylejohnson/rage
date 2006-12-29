@@ -23,6 +23,11 @@ module RAGE
       agents[agent.aid] = agent
     end
     
+    # Search for an agent identified by the supplied AID.
+    # Return the AMS agent description of the agent.
+    def search(aid)
+    end
+    
   end # class AgentManagementSystem
   
 end # module RAGE

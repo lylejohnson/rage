@@ -1,19 +1,18 @@
 module RAGE
 
-  class AID
+  class AgentIdentifier
 
     #
     # The symbolic name of the agent.
     #
-    attr_accessor :name
+    attr_reader :name
 
     #
     # Return an initialized agent identifier.
     #
-    def initialize(nm=nil, addr=nil)
-      @name = nm
-      @addresses = []
-      @addresses << addr unless addr.nil?
+    def initialize(params)
+      @name = params[:name]
+      @addresses = params[:addresses]
       @resolvers = []
     end
     
@@ -69,7 +68,7 @@ module RAGE
       end
     end
     
-  end # class AID
+  end # class AgentIdentifier
   
 end # module RAGE
 
