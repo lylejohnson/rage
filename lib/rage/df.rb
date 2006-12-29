@@ -1,3 +1,5 @@
+require 'rage/exceptions'
+
 module RAGE
 
   class ServiceDescription
@@ -139,19 +141,23 @@ module RAGE
       unless @entries.key? agent_description.name
         @entries[agent_description.name] = agent_description
       else
-        raise RuntimeError, "agent already registered"
+        raise FailureException.new("already-registered")
       end
     end
     
     def deregister(agent_description)
-      @entries.delete(agent_description.name)
+      if @entries.key? agent_description.name
+        @entries.delete(agent_description.name)
+      else
+        raise FailureException.new("not-registered")
+      end
     end
     
     def modify(agent_description)
       if @entries.key? agent_description.name
         @entires[agent_description.name] = agent_description
       else
-        raise RuntimeError, "no such agent is registered"
+        raise FailureException.new("not-registered")
       end
     end
     

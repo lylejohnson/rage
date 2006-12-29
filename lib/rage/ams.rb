@@ -1,4 +1,5 @@
 require 'rage/aid'
+require 'rage/exceptions'
 
 module RAGE
 
@@ -74,12 +75,27 @@ module RAGE
     # Register an agent with the specified AMSAgentDescription.
     #
     def register(agent_description)
+      unless @agents.key? agent_description.name
+        @agents[agent_description.name] = agent_description
+      else
+        raise FailureException.new("already-registered")
+      end
     end
     
     def deregister(agent_description)
+      if @agents.key? agent_description.name
+        @agents.delete(agent_description.name)
+      else
+        raise FailureException.new("not-registered")
+      end
     end
     
     def modify(agent_description)
+      if @agents.key? agent_description.name
+        @agents[agent_description.name] = agent_description
+      else
+        raise FailureException.new("not-registered")
+      end
     end
     
     # Search for an agent identified by the supplied pattern.
