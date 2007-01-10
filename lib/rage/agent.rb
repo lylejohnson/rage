@@ -17,7 +17,7 @@ module RAGE
   # The Agent class is the common superclass for user defined software agents.
   # It provides methods to perform basic agent tasks, such as:
   #
-  # * Message passing using ACLMessage objects, both unicast and multicast with optional pattern matching.
+  # * Message passing using Message objects, both unicast and multicast with optional pattern matching.
   # * Complete Agent Platform life cycle support, including starting, suspending and killing an agent.
   # * Scheduling and execution of multiple concurrent activities.
   # * Simplified interaction with FIPA system agents for automating common agent tasks (DF registration, etc.). 

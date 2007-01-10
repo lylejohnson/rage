@@ -18,7 +18,7 @@ module RAGE
   #
   # Represents a FIPA ACL message.
   #
-  class ACLMessage
+  class Message
 
   public
 
@@ -57,7 +57,7 @@ module RAGE
     attr_accessor :reply_by
 
     #
-    # Return an initialized ACLMessage instance.
+    # Return an initialized Message instance.
     #
     def initialize
       @performative = nil
@@ -118,10 +118,10 @@ module RAGE
     end
 
     #
-    # Return a new ACLMessage instance, with contents initialized
+    # Return a new Message instance, with contents initialized
     # from a string containing XML.
     #
-    def ACLMessage.from_xml(str)
+    def Message.from_xml(str)
       RAGE::XMLCodec.new.decode(str)
     end
 
@@ -132,7 +132,7 @@ module RAGE
       RAGE::XMLCodec.new.encode(self)
     end
     
-  end # class ACLMessage
+  end # class Message
   
 end # module RAGE
 

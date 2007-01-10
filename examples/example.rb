@@ -37,12 +37,11 @@ class Sam < RAGE::Agent
   end
   
   def run
-    logger.info "start Sam#run"
     loop do
       sellers = lookup_booksellers
       unless sellers.empty?
         logger.info "Found a bookseller!"
-        break
+        contact_booksellers(sellers)
       else
         logger.info "No booksellers available, sleeping..."
         sleep 5
@@ -54,6 +53,12 @@ class Sam < RAGE::Agent
     service_description = RAGE::ServiceDescription.new(:type => "bookseller")
     agent_description = RAGE::DFAgentDescription.new(:services => [service_description])
     df.search(agent_description)
+  end
+  
+  def contact_booksellers(agents)
+    agents.each do |agent|
+      send_message(msg)
+    end
   end
 
 end

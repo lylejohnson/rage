@@ -36,12 +36,12 @@ module RAGE
     end
 
     #
-    # Return a new ACLMessage instance, with contents initialized
+    # Return a new Message instance, with contents initialized
     # from an REXML document _doc_.
     #
     def decode(src)
       doc = REXML::Document.new(src)
-      msg = ACLMessage.new
+      msg = Message.new
       msg.performative = doc.root.attributes["act"]
       msg.conversation_id = doc.root.attributes["conversation-id"]
       receiver_elt = doc.root.elements["receiver"]

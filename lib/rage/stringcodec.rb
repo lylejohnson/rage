@@ -5,7 +5,7 @@ require 'rage/npreader'
 module RAGE
 
   #
-  # Instances of this class can be used to encode an ACLMessage object into
+  # Instances of this class can be used to encode an Message object into
   # its string representation, as specified by the "FIPA ACL Message
   # Representation in String Specification" (SC00070I).
   #
@@ -41,7 +41,7 @@ module RAGE
     private :decode_agent_identifier
 
     def decode(src)
-      msg = ACLMessage.new
+      msg = Message.new
       parser = NPReader.new
       ast = parser.parse(src)
       msg.performative = ast.values.shift
