@@ -1,4 +1,4 @@
-require 'rage/aclmessage'
+require 'rage/Message'
 require 'rage/aid'
 require 'rage/npreader'
 
