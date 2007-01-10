@@ -1,3 +1,4 @@
+require 'logger'
 require 'net/http'
 
 module RAGE
@@ -11,13 +12,14 @@ module RAGE
     # Return an initialized MessageTransportSystem instance.
     #
     def initialize(params={})
-      @logger = params[:logger]
+      @logger = params[:logger] || Logger.new(STDOUT)
     end
 
     #
     # Send a message using the HTTP transport.
     #
-    def send(msg)
+=begin
+    def send_message(msg)
       path = "/"
       data = ""
       header = {
@@ -31,6 +33,11 @@ module RAGE
           response = http.post(path, data, header)
         end
       end
+    end
+=end
+
+    def send_message(msg)
+      logger.info "MTS" do "Received message: #{msg.inspect}" end
     end
     
   end # class MessageTransportSystem

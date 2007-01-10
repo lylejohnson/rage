@@ -1,6 +1,8 @@
 require 'rage/aid'
 require 'rage/exceptions'
 
+require 'logger'
+
 module RAGE
 
   class ServiceDescription
@@ -141,7 +143,7 @@ module RAGE
     #
     def initialize(params={})
       @aid = RAGE::AgentIdentifier.new(:name => "df@hap_name", :addresses => ["hap_transport_address"])
-      @logger = params[:logger]
+      @logger = params[:logger] || Logger.new(STDOUT)
       @entries = {}
     end
 

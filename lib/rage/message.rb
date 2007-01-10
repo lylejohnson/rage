@@ -59,20 +59,24 @@ module RAGE
     #
     # Return an initialized Message instance.
     #
-    def initialize
-      @performative = nil
-      @receivers = []
-      @sender = nil
-      @reply_to = []
-      @content = nil
-      @language = nil
-      @encoding = nil
-      @ontology = nil
-      @protocol = nil
-      @conversation_id = nil
-      @reply_with = nil
-      @in_reply_to = nil
-      @reply_by = nil
+    def initialize(params={})
+      @performative = params[:performative]
+      @sender = params[:sender]
+      @reply_to = params[:reply_to] || []
+      @content = params[:content]
+      @language = params[:language]
+      @encoding = params[:encoding]
+      @ontology = params[:ontology]
+      @protocol = params[:protocol]
+      @conversation_id = params[:conversation_id]
+      @reply_with = params[:reply_with]
+      @in_reply_to = params[:in_reply_to]
+      @reply_by = params[:reply_by]
+      if params.key? :receiver
+        @receivers = [ params[:receiver] ]
+      else
+        @receivers = params[:receivers] || []
+      end
     end
 
     #
@@ -99,6 +103,13 @@ module RAGE
       else
         nil
       end
+    end
+    
+    #
+    # Set the receiver to this agent (an AID)
+    #
+    def receiver=(recv)
+      @receivers = [recv]
     end
     
     #

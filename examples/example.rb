@@ -1,4 +1,5 @@
 require 'rage/agent'
+require 'rage/message'
 require 'rage/platform'
 
 # Bob is the seller
@@ -21,7 +22,7 @@ class Bob < RAGE::Agent
   end
   
   def run
-    sleep 15
+    sleep 10
     register_capabilities
     loop do
       # do something
@@ -56,7 +57,13 @@ class Sam < RAGE::Agent
   end
   
   def contact_booksellers(agents)
+    msg = RAGE::Message.new(
+      :performative => "query", 
+      :sender => aid.name,
+      :content => "content goes here"
+    )
     agents.each do |agent|
+      msg.receiver = agent.name
       send_message(msg)
     end
   end
