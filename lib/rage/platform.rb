@@ -26,17 +26,17 @@ module RAGE
     #
     def initialize
       # Initialize standard services
-      @ams = AgentManagementSystem.new
+      @logger = Logger.new(STDOUT)
+      @ams = AgentManagementSystem.new(:logger => logger)
       @df = DirectoryFacilitator.new
       @mts = MessageTransportSystem.new
-      @logger = Logger.new("rage.log")
     end
 
     #
     # Return a Class given its name, borrowed from http://www.rubygarden.org/ruby?FindClassesByName.
     #
     def get_class(name)
-      name.split(/::/).inject(Object) { |p, n| p.const_get(n)}  
+      name.split(/::/).inject(Object) { |p, n| p.const_get(n) }  
     end
 
     private :get_class
@@ -60,8 +60,7 @@ module RAGE
           rescue NameError
             logger.error "Couldn't instantiate an agent of class #{className}"
           end
-          agent = agentClass.new
-          @ams.register(agent, agentName)
+          agent = agentClass.new(:ams => ams, :name => agentName, :logger => logger)
           Thread.new { agent.run }
         end
       end

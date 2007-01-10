@@ -1,11 +1,8 @@
 require 'net/http'
-require 'singleton'
 
 module RAGE
 
   class MessageTransportSystem
-
-    include Singleton
 
     #
     # Return an initialized MessageTransportSystem instance.

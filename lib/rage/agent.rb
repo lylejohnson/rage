@@ -1,3 +1,4 @@
+require 'rage/ams'
 require 'rage/mts'
 
 module RAGE
@@ -29,15 +30,12 @@ module RAGE
     # The agent identifier (AID) for this agent.
     attr_accessor :aid
     
-    # The agent identifier (AID) for the platform Agent Messaging System (AMS).
+    # A reference to the platform's Agent Messaging System (AMS).
     attr_reader :ams
     
     # The agent identifier (AID) for the platform's default Directory Facilitator (DF).
     attr_reader :df
     
-    # The array of arguments passed to this agent.
-    attr_reader :arguments
-
     # The agent's local name.
     attr_reader :local_name
     
@@ -47,10 +45,22 @@ module RAGE
     # The agent's home address.
     attr_reader :hap
     
+    # Platform logger instance
+    attr_reader :logger
+
     #
     # Return an initialized Agent instance.
     #
-    def initialize
+    def initialize(params={})
+      @ams = params[:ams]
+      @logger = params[:logger]
+      @aid = RAGE::AgentIdentifier.new(:name => params[:name])
+      agent_description = RAGE::AMSAgentDescription.new(
+        :name => aid,
+        :ownership => "My Owner",
+        :state => :initiated
+      )
+      ams.register(agent_description)
     end
 
     #

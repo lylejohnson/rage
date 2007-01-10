@@ -59,16 +59,19 @@ module RAGE
   end
 
   class AgentManagementSystem
-    #
+    
     # Map of AIDs to agents.
-    #
     attr_reader :agents
+    
+    # Platform logger
+    attr_reader :logger
 
     #
     # Return an initialized AgentManagementSystem (AMS) instance.
     #
-    def initialize
+    def initialize(params={})
       @agents = {}
+      @logger = params[:logger]
     end
 
     #
@@ -77,6 +80,7 @@ module RAGE
     def register(agent_description)
       unless @agents.key? agent_description.name
         @agents[agent_description.name] = agent_description
+        logger.info "registered agent #{agent_description.name.name}"
       else
         raise FailureException.new("already-registered")
       end

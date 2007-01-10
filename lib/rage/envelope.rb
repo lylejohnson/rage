@@ -8,12 +8,12 @@ module RAGE
 
     attr_reader :by, :from, :date, :id, :via
 
-    def initialize(by, from, date, id, via)
-      @by = by
-      @from = from
-      @date = date
-      @id = id
-      @via = via
+    def initialize(params)
+      @by = params[:by]
+      @from = params[:from]
+      @date = params[:date]
+      @id = params[:id]
+      @via = params[:via]
     end
 
   end # class Received
@@ -144,7 +144,7 @@ module RAGE
           if received.elements["received-via"]
             via = received.elements["received-via"].attributes["value"]
           end
-          env.received = Received.new(by, from, date, id, via)
+          env.received = Received.new(:by => by, :from => from, :date => date, :id => id, :via => via)
         end
       end
       env
