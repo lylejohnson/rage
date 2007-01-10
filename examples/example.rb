@@ -43,6 +43,7 @@ class Sam < RAGE::Agent
       unless sellers.empty?
         logger.info "Found a bookseller!"
         contact_booksellers(sellers)
+        break
       else
         logger.info "No booksellers available, sleeping..."
         sleep 5
@@ -59,7 +60,7 @@ class Sam < RAGE::Agent
   def contact_booksellers(agents)
     msg = RAGE::Message.new(
       :performative => "query", 
-      :sender => aid.name,
+      :sender => aid,
       :content => "content goes here"
     )
     agents.each do |agent|
