@@ -24,12 +24,13 @@ module RAGE
     #
     # Return an initialized Platform instance.
     #
-    def initialize
+    def initialize(params={})
       # Initialize standard services
       @logger = Logger.new(STDOUT)
       @ams = AgentManagementSystem.new(:logger => logger)
       @df = DirectoryFacilitator.new
       @mts = MessageTransportSystem.new
+      @config = params[:config] || "rage.yaml"
     end
 
     #
@@ -46,8 +47,8 @@ module RAGE
     #
     def run
       # Start up agents listed in configuration file
-      if File.exist?("rage.yml")
-        startup = YAML::load(File.open("rage.yml", "r"))
+      if File.exist?(@config)
+        startup = YAML::load(File.open(@config, "r"))
         startup.each do |description|
           agentName = description["name"]
           agentSrc = description["src"]
