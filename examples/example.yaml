@@ -1,4 +1,8 @@
 -
-    name: Summer
+    name: Bob
     src: example.rb
-    classname: SummerAgent
+    classname: Bob
+-
+    name: Sam
+    src: example.rb
+    classname: Sam

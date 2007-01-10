@@ -1,3 +1,4 @@
+require 'rage/aid'
 require 'rage/exceptions'
 
 module RAGE
@@ -128,10 +129,19 @@ module RAGE
   # of the Agent Directory Service described in the Abstract Architecture.
   #
   class DirectoryFacilitator
+    
+    # Agent identifier
+    attr_reader :aid
+
+    # A reference to the platform logger
+    attr_reader :logger
+
     #
     # Return an initialized DirectoryFacilitator instance.
     #
-    def initialize
+    def initialize(params={})
+      @aid = RAGE::AgentIdentifier.new(:name => "df@hap_name", :addresses => ["hap_transport_address"])
+      @logger = params[:logger]
       @entries = {}
     end
 
@@ -140,6 +150,7 @@ module RAGE
     def register(agent_description)
       unless @entries.key? agent_description.name
         @entries[agent_description.name] = agent_description
+        logger.info "Registered agent capabilities for #{agent_description.name.name}"
       else
         raise FailureException.new("already-registered")
       end

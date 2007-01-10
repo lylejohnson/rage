@@ -4,10 +4,14 @@ module RAGE
 
   class MessageTransportSystem
 
+    # A reference to the platform logger
+    attr_reader :logger
+
     #
     # Return an initialized MessageTransportSystem instance.
     #
-    def initialize
+    def initialize(params={})
+      @logger = params[:logger]
     end
 
     #

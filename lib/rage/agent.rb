@@ -33,41 +33,38 @@ module RAGE
     # A reference to the platform's Agent Messaging System (AMS).
     attr_reader :ams
     
-    # The agent identifier (AID) for the platform's default Directory Facilitator (DF).
+    # A reference to the platform's Message Transport System (MTS)
+    attr_reader :mts
+
+    # A reference to the platform's Directory Facilitator (DF).
     attr_reader :df
-    
-    # The agent's local name.
-    attr_reader :local_name
-    
-    # The agent's complete name.
-    attr_reader :name
-    
-    # The agent's home address.
-    attr_reader :hap
     
     # Platform logger instance
     attr_reader :logger
+
+    # The life cycle state of the agent (one of :initiated, :active, :suspended, :waiting or :transit)
+    attr_reader :state
+    
+    # The owner of this agent (a string)
+    attr_reader :owner
 
     #
     # Return an initialized Agent instance.
     #
     def initialize(params={})
       @ams = params[:ams]
+      @df = params[:df]
+      @mts = params[:mts]
       @logger = params[:logger]
       @aid = RAGE::AgentIdentifier.new(:name => params[:name])
+      @owner = "My Owner"
+      @state = :active
       agent_description = RAGE::AMSAgentDescription.new(
         :name => aid,
-        :ownership => "My Owner",
-        :state => :initiated
+        :ownership => owner,
+        :state => state
       )
       ams.register(agent_description)
-    end
-
-    #
-    # Return a reference to the message transport system.
-    #
-    def mts
-      MessageTransportSystem.instance
     end
 
     #
@@ -122,8 +119,8 @@ module RAGE
     # This method sends a message to the agent specified in :receiver message
     # field (more than one agent can be specified as message receiver).
     #
-    def send(msg)
-      mts.send(msg)
+    def send_message(msg)
+      mts.send_message(msg)
     end
     
     #
@@ -181,8 +178,13 @@ module RAGE
     #
     def run
       loop do
-        # something
+        msg = blocking_receive
+        handle_message(msg)
       end
+    end
+    
+    # Handle a message
+    def handle_message(msg)
     end
     
   end # class Agent

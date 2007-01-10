@@ -28,8 +28,8 @@ module RAGE
       # Initialize standard services
       @logger = Logger.new(STDOUT)
       @ams = AgentManagementSystem.new(:logger => logger)
-      @df = DirectoryFacilitator.new
-      @mts = MessageTransportSystem.new
+      @df = DirectoryFacilitator.new(:logger => logger)
+      @mts = MessageTransportSystem.new(:logger => logger)
       @config = params[:config] || "rage.yaml"
     end
 
@@ -61,7 +61,7 @@ module RAGE
           rescue NameError
             logger.error "Couldn't instantiate an agent of class #{className}"
           end
-          agent = agentClass.new(:ams => ams, :name => agentName, :logger => logger)
+          agent = agentClass.new(:ams => ams, :df => df, :mts => mts,:logger => logger, :name => agentName)
           Thread.new { agent.run }
         end
       end
