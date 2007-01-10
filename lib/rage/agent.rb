@@ -64,7 +64,7 @@ module RAGE
         :ownership => owner,
         :state => state
       )
-      ams.register(agent_description)
+      ams.register(agent_description, self)
     end
 
     #
@@ -171,6 +171,7 @@ module RAGE
     # to oneself (though slightly faster).
     #
     def post_message(msg)
+      logger.info "A message was posted to the message queue for agent: #{aid.name}"
     end
     
     #

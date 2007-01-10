@@ -52,38 +52,43 @@ module RAGE
     # The life cycle state of the agent (one of :initiated, :active, :suspended, :waiting or :transit)
     attr_reader :state
 
+    # Return an initialized agent description
     def initialize(params={})
       @name = params[:name]
       @ownership = params[:ownership]
       @state = params[:state]
     end
     
+    # Return +true+ if this agent description matches the pattern
+    def matches?(pattern)
+      return false if (pattern.name && !self.name.matches?(pattern.name))
+      return false if (pattern.ownership && ownership != pattern.ownership)
+      return false if (pattern.state && state != pattern.state)
+      true
+    end
+    
   end
 
   class AgentManagementSystem
     
-    # Map of AIDs to agents.
-    attr_reader :agents
-    
-    # Platform logger
-    attr_reader :logger
-
     #
     # Return an initialized AgentManagementSystem (AMS) instance.
     #
     def initialize(params={})
       @aid = RAGE::AgentIdentifier.new(:name => "ams@hap_name", :addresses => ["hap_transport_address"])
       @agents = {}
+      @agent_descriptions = {}
       @logger = params[:logger] || Logger.new(STDOUT)
     end
 
     #
     # Register an agent with the specified AMSAgentDescription.
     #
-    def register(agent_description)
+    def register(agent_description, agent)
       unless @agents.key? agent_description.name
-        @agents[agent_description.name] = agent_description
-        logger.info "registered agent #{agent_description.name.name}"
+        @agents[agent_description.name] = agent
+        @agent_descriptions[agent_description.name] = agent_description
+        @logger.info "registered agent #{agent_description.name.name}"
       else
         raise FailureException.new("already-registered")
       end
@@ -92,6 +97,7 @@ module RAGE
     def deregister(agent_description)
       if @agents.key? agent_description.name
         @agents.delete(agent_description.name)
+        @agent_descriptions.delete(agent_description.name)
       else
         raise FailureException.new("not-registered")
       end
@@ -99,17 +105,19 @@ module RAGE
     
     def modify(agent_description)
       if @agents.key? agent_description.name
-        @agents[agent_description.name] = agent_description
+        @agent_descriptions[agent_description.name] = agent_description
       else
         raise FailureException.new("not-registered")
       end
     end
     
+    #
     # Search for an agent identified by the supplied pattern.
-    # Return the AMS agent description of the matching agent(s).
+    # Return the AMS agent description(s) of the matching agent(s).
+    #
     def search(pattern, search_constraints=nil)
       matches = []
-      @entries.each do |agent_description|
+      @agent_descriptions.each_value do |agent_description|
         matches << agent_description if agent_description.matches? pattern
       end
       matches
@@ -118,6 +126,11 @@ module RAGE
     # Return the platform profile of the AP for this AMS
     def get_description
       APDescription.new
+    end
+    
+    # Return a reference to the agent registered under this AgentIdentifier.
+    def agent_for_name(name)
+      @agents[name]
     end
     
   end # class AgentManagementSystem

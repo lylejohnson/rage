@@ -1,3 +1,5 @@
+require 'rage/ams'
+
 require 'logger'
 require 'net/http'
 
@@ -7,37 +9,28 @@ module RAGE
 
     # A reference to the platform logger
     attr_reader :logger
+    
+    # A reference to the platform AMS
+    attr_reader :ams
 
     #
     # Return an initialized MessageTransportSystem instance.
     #
     def initialize(params={})
       @logger = params[:logger] || Logger.new(STDOUT)
+      @ams = params[:ams]
     end
 
-    #
-    # Send a message using the HTTP transport.
-    #
-=begin
     def send_message(msg)
-      path = "/"
-      data = ""
-      header = {
-        "Content-Type"  => "multipart/mixed",
-        "Host"          => "hostname:80",
-        "Cache-Control" => "no-cache",
-        "MIME-Version"  => "1.0"
-      }
-      msg.each_receiver do |recv|
-        Net::HTTP.start(recv.address) do |http|
-          response = http.post(path, data, header)
+      logger.info "Received message: #{msg}"
+      msg.receivers.each do |receiver|
+        agent = ams.agent_for_name(receiver)
+        if agent
+          agent.post_message(msg)
+        else
+          # No such agent is registered with the AMS?
         end
       end
-    end
-=end
-
-    def send_message(msg)
-      logger.info "MTS" do "Received message: #{msg.inspect}" end
     end
     
   end # class MessageTransportSystem

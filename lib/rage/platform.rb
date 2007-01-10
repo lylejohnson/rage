@@ -29,7 +29,7 @@ module RAGE
       @logger = Logger.new(STDOUT)
       @ams = AgentManagementSystem.new(:logger => logger)
       @df = DirectoryFacilitator.new(:logger => logger)
-      @mts = MessageTransportSystem.new(:logger => logger)
+      @mts = MessageTransportSystem.new(:logger => logger, :ams => ams)
       @config = params[:config] || "rage.yaml"
     end
 

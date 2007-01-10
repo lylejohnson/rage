@@ -29,11 +29,15 @@ module RAGE
     attr_accessor :performative
     
     #
-    # The _sender_ denotes the identity of the sender of the message, i.e.
-    # the name of the agent of the communicative act.
+    # The _sender_ (an AgentIdentifier instance) denotes the identity of the
+    # sender of the message, i.e. the name of the agent of the communicative act.
     #
     attr_accessor :sender
     
+    # Subsequent messages in this conversation thread are to be directed to this
+    # agent (an AgentIdentifier) instead of the sender.
+    attr_accessor :reply_to
+
     # The content of the message.
     attr_accessor :content
     
@@ -51,9 +55,19 @@ module RAGE
     # ACL message (see FIPA00025).
     #
     attr_accessor :protocol
+    
+    # An expression (a conversation identifier) which is used to identify
+    # the ongoing sequence of communicative acts that together form a conversation.
     attr_accessor :conversation_id
+    
+    # An expression that will be used by the responding agent to identify this message.
     attr_accessor :reply_with
+    
+    # An expression that references an earlier action to which this message is a reply.
     attr_accessor :in_reply_to
+    
+    # A time and/or date expression which indicates the latest time by which the sending
+    # agent would like to receive a reply.
     attr_accessor :reply_by
 
     #
@@ -106,7 +120,7 @@ module RAGE
     end
     
     #
-    # Set the receiver to this agent (an AID)
+    # Set the intended recipient of the message to the agent indicated by the given AgentIdentifier
     #
     def receiver=(recv)
       @receivers = [recv]
