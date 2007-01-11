@@ -25,7 +25,7 @@
     </rdfs:comment>
     <rdfs:domain rdf:resource="Rule"/>
     <rdfs:range rdf:resource=
-      "http://www.w3c.org/TR/1999/PR-rdf-schema-19990303#Bag"/>
+      "http://www.w3.org/2000/01/rdf-schema#Bag"/>
   </rdfs:ConstraintProperty>
  
   <rdfs:ConstraintProperty rdf:ID="implementedAs">
