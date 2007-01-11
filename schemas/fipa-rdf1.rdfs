@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:rdfs="http://www.w3.org/TR/1999/PR-rdf-schema-19990303#"
-         xmlns:fipa="http://www.fipa.org/schemas/fipa-rdf0#">
+         xmlns:fipa="http://www.fipa.org/schemas/fipa-rdf0#"
+		 xml:base="http://www.fipa.org/schemas/fipa-rdf1#">
  
   <rdfs:Class rdf:ID="Rule">
     <rdfs:label xml:lang="en">rule</rdfs:label>
