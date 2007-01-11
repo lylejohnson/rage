@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/TR/1999/PR-rdf-schema-19990303#"
+         xmlns:fipa="http://www.fipa.org/schemas/fipa-rdf0#">
+ 
+  <rdfs:Class rdf:ID="Rule">
+    <rdfs:label xml:lang="en">rule</rdfs:label>
+    <rdfs:label xml:lang="fr">regle</rdfs:label>
+  </rdfs:Class>
+ 
+  <rdfs:ConstraintProperty rdf:ID="selection">
+    <rdfs:comment>The selection part </rdfs:comment>
+    <rdfs:domain rdf:resource="Rule"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="manipulation">
+    <rdfs:comment>The manipulation part</rdfs:comment>
+    <rdfs:domain rdf:resource="Rule"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="selection-result">
+    <rdfs:comment>
+      Identifies the container filled with selection results
+    </rdfs:comment>
+    <rdfs:domain rdf:resource="Rule"/>
+    <rdfs:range rdf:resource=
+      "http://www.w3c.org/TR/1999/PR-rdf-schema-19990303#Bag"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="implementedAs">
+    <rdfs:label xml:lang="en">implemented as</rdfs:label>
+    <rdfs:label xml:lang="fr">implemente comme</rdfs:label>
+    <rdfs:domain rdf:resource="Rule"/>
+  </rdfs:ConstraintProperty>
+</rdf:RDF>

@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/TR/1999/PR-rdf-schema-19990303#">
+ 
+  <rdfs:Class rdf:ID="Proposition">
+    <rdfs:label xml:lang="en">proposition</rdfs:label>
+    <rdfs:label xml:lang="fr">proposition</rdfs:label>
+    <rdfs:subClassOf rdf:resource=
+      "http://www.w3c.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdfs:comment>This describes the set of propositions</rdfs:comment>
+  </rdfs:Class>
+ 
+  <rdfs:ConstraintProperty rdf:ID="belief">
+    <rdfs:label xml:lang="en">belief</rdfs:label>
+    <rdfs:label xml:lang="fr">acte</rdfs:label>
+    <rdfs:domain rdf:resource="#Proposition"/>
+    <rdfs:range rdf:resource=
+      "http://www.w3c.org/TR/1999/PR-rdf-schema-19990303#Literal"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:Class rdf:ID="Action">
+    <rdfs:label xml:lang="en">action</rdfs:label>
+    <rdfs:label xml:lang="fr">action</rdfs:label>
+    <rdfs:subClassOf rdf:resource=
+      "http://www.w3c.org/TR/1999/PR-rdf-schema-19990303#Resource"/>
+    <rdfs:comment>This describes the set of actions</rdfs:comment>
+  </rdfs:Class>
+ 
+  <rdfs:ConstraintProperty rdf:ID="act">
+    <rdfs:label xml:lang="en">act</rdfs:label>
+    <rdfs:label xml:lang="fr">acte</rdfs:label>
+    <rdfs:domain rdf:resource="#Action"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="actor">
+    <rdfs:label xml:lang="en">actor</rdfs:label>
+    <rdfs:label xml:lang="fr">acteur</rdfs:label>
+    <rdfs:domain rdf:resource="#Action"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="argument">
+    <rdfs:label xml:lang="en">argument</rdfs:label>
+    <rdfs:label xml:lang="fr">argument</rdfs:label>
+    <rdfs:domain rdf:resource="#Action"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="done">
+    <rdfs:label xml:lang="en">done</rdfs:label>
+    <rdfs:label xml:lang="fr">fini</rdfs:label>
+    <rdfs:domain rdf:resource="#Action"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="result">
+    <rdfs:label xml:lang="en">result</rdfs:label>
+    <rdfs:label xml:lang="fr">resultat</rdfs:label>
+    <rdfs:domain rdf:resource="#Action"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="implementedBy">
+    <rdfs:label xml:lang="en">implementedBy</rdfs:label>
+    <rdfs:label xml:lang="fr">implemente par</rdfs:label>
+    <rdfs:domain rdf:resource="#Action"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:Class rdf:ID="Code">
+    <rdfs:label xml:lang="en">code</rdfs:label>
+    <rdfs:label xml:lang="fr">code</rdfs:label>
+    <rdfs:comment>This describes the code implementation</rdfs:comment>
+  </rdfs:Class>
+ 
+  <rdfs:ConstraintProperty rdf:ID="language">
+    <rdfs:label xml:lang="en">language</rdfs:label>
+    <rdfs:label xml:lang="fr">langue</rdfs:label>
+    <rdfs:domain rdf:resource="#Code"/>
+    <rdfs:range rdf:resource=
+      "http://www.w3c.org/TR/1999/PR-rdf-schema-19990303#Literal"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="binding">
+    <rdfs:label xml:lang="en">binding</rdfs:label>
+    <rdfs:label xml:lang="fr">binding</rdfs:label>
+    <rdfs:domain rdf:resource="#Code"/>
+    <rdfs:range rdf:resource=
+      "http://www.w3c.org/TR/1999/PR-rdf-schema-19990303#Literal"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="code-uri">
+    <rdfs:label xml:lang="en">code-uri</rdfs:label>
+    <rdfs:label xml:lang="fr">code-uri</rdfs:label>
+    <rdfs:domain rdf:resource="#Code"/>
+    <rdfs:range rdf:resource=
+      "http://www.w3c.org/TR/1999/PR-rdf-schema-19990303#Literal"/>
+  </rdfs:ConstraintProperty>
+ 
+  <rdfs:ConstraintProperty rdf:ID="script">
+    <rdfs:label xml:lang="en">script</rdfs:label>
+    <rdfs:label xml:lang="fr">script</rdfs:label>
+    <rdfs:domain rdf:resource="#Code"/>
+    <rdfs:range rdf:resource=
+      "http://www.w3c.org/TR/1999/PR-rdf-schema-19990303#Literal"/>
+  </rdfs:ConstraintProperty>
+</rdf:RDF>
