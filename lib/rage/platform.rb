@@ -4,6 +4,7 @@ require 'rage/df'
 
 require 'yaml'
 require 'logger'
+require 'socket'
 
 module RAGE
 
@@ -48,23 +49,32 @@ module RAGE
     def run
       # Start up agents listed in configuration file
       if File.exist?(@config)
+        hostname = Socket.gethostname
         startup = YAML::load(File.open(@config, "r"))
         startup.each do |description|
-          agentName = description["name"]
-          agentSrc = description["src"]
-          src = File.open(agentSrc).read
-          load agentSrc
-          agentClass = nil
+          agent_name = description["name"]
+          agent_src = description["src"]
+          src = File.open(agent_src).read
+          load agent_src
+          agent_class = nil
           begin
-            className = description["classname"]
-            agentClass = get_class(className)
+            class_name = description["classname"]
+            agent_class = get_class(class_name)
           rescue NameError
             logger.error "Couldn't instantiate an agent of class #{className}"
           end
-          agent = agentClass.new(:ams => ams, :df => df, :acc => acc, :logger => logger, :name => agentName)
+          agent = agent_class.new(:ams => ams, :df => df, :acc => acc, :logger => logger, :name => fully_qualified_agent_name(agent_name))
           Thread.new { agent.run }
         end
       end
+    end
+    
+    def hostname
+      Socket.gethostname
+    end
+    
+    def fully_qualified_agent_name(name)
+      "#{name}@#{hostname}"
     end
     
   end # class Platform

@@ -58,7 +58,10 @@ module RAGE
       @df = params[:df]
       @acc = params[:acc]
       @logger = params[:logger]
-      @aid = RAGE::AgentIdentifier.new(:name => params[:name])
+      @aid = RAGE::AgentIdentifier.new(
+        :name => params[:name],
+        :addresses => [ ams.get_description.services.first.addresses.first ]
+      )
       @owner = "My Owner"
       @state = :active
       agent_description = RAGE::AMSAgentDescription.new(
