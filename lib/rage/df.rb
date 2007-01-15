@@ -143,7 +143,7 @@ module RAGE
     # Return an initialized DirectoryFacilitator instance.
     #
     def initialize(params={})
-      @aid = RAGE::AgentIdentifier.new(:name => "df@hap_name", :addresses => ["hap_transport_address"])
+      @aid = RAGE::AgentIdentifier.new(params)
       @logger = params[:logger] || Logger.new(STDOUT)
       @entries = {}
       @entries_mutex = Mutex.new

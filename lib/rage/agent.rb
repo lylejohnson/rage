@@ -60,7 +60,8 @@ module RAGE
       @logger = params[:logger]
       @aid = RAGE::AgentIdentifier.new(
         :name => params[:name],
-        :addresses => [ ams.get_description.services.first.addresses.first ]
+        :addresses => params[:addresses],
+        :resolvers => params[:resolvers]
       )
       @owner = "My Owner"
       @state = :active

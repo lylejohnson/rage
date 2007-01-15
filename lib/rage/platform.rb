@@ -28,8 +28,8 @@ module RAGE
     def initialize(params={})
       # Initialize standard services
       @logger = Logger.new(STDOUT)
-      @ams = AgentManagementSystem.new(:logger => logger)
-      @df = DirectoryFacilitator.new(:logger => logger)
+      @ams = AgentManagementSystem.new(:name => fully_qualified_agent_name("ams"), :addresses => agent_transport_addresses, :logger => logger)
+      @df = DirectoryFacilitator.new(:name => fully_qualified_agent_name("df"), :addresses => agent_transport_addresses, :logger => logger)
       @acc = AgentCommunicationChannel.new(:logger => logger, :ams => ams)
       @config = params[:config] || "rage.yaml"
     end
@@ -63,7 +63,14 @@ module RAGE
           rescue NameError
             logger.error "Couldn't instantiate an agent of class #{className}"
           end
-          agent = agent_class.new(:ams => ams, :df => df, :acc => acc, :logger => logger, :name => fully_qualified_agent_name(agent_name))
+          agent = agent_class.new(
+            :ams => ams,
+            :df => df,
+            :acc => acc,
+            :logger => logger,
+            :name => fully_qualified_agent_name(agent_name),
+            :addresses => agent_transport_addresses
+          )
           Thread.new { agent.run }
         end
       end
@@ -71,6 +78,10 @@ module RAGE
     
     def hostname
       Socket.gethostname
+    end
+    
+    def agent_transport_addresses
+      [ "druby://localhost:9001" ]
     end
     
     def fully_qualified_agent_name(name)

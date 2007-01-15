@@ -76,11 +76,15 @@ module RAGE
     # Return an initialized AgentManagementSystem (AMS) instance.
     #
     def initialize(params={})
-      @aid = RAGE::AgentIdentifier.new(:name => "ams@hap_name", :addresses => ["hap_transport_address"])
+      @aid = RAGE::AgentIdentifier.new(params)
       @agents = {}
       @agent_descriptions = {}
       @ams_mutex = Mutex.new
       @logger = params[:logger] || Logger.new(STDOUT)
+    end
+    
+    def hostname
+      Socket.gethostname
     end
 
     #
