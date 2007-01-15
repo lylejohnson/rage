@@ -142,6 +142,15 @@ module RAGE
       logger.info "Agent #{name} asked to handle message"
     end
     
+    # Add a behavior
+    def add_behavior(*args, &blk)
+      if block_given?
+        Thread.new { blk.call }
+      else
+        raise RuntimeError, "no block given"
+      end
+    end
+    
   end # class Agent
 
 end # module RAGE

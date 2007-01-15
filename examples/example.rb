@@ -7,7 +7,12 @@ class Bob < RAGE::Agent
   
   def initialize(params={})
     super
-    setup_behavior
+    add_behavior {
+      Thread.new do
+        sleep 10
+        register_capabilities
+      end
+    }
   end
   
   def register_capabilities
@@ -22,36 +27,27 @@ class Bob < RAGE::Agent
     df.register(agent_description)
   end
   
-  def setup_behavior
-    Thread.new do
-      sleep 10
-      register_capabilities
-    end
-  end
-
 end
 
 class Sam < RAGE::Agent
   
   def initialize(params={})
     super
-    setup_behavior
-  end
-  
-  def setup_behavior
-    Thread.new do
-      loop do
-        sellers = lookup_booksellers
-        unless sellers.empty?
-          logger.info "Found a bookseller!"
-          contact_booksellers(sellers)
-          break
-        else
-          logger.info "No booksellers available, sleeping..."
-          sleep 5
+    add_behavior {
+      Thread.new do
+        loop do
+          sellers = lookup_booksellers
+          unless sellers.empty?
+            logger.info "Found a bookseller!"
+            contact_booksellers(sellers)
+            break
+          else
+            logger.info "No booksellers available, sleeping..."
+            sleep 5
+          end
         end
       end
-    end
+    }
   end
   
   def lookup_booksellers
