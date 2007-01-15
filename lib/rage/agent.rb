@@ -1,5 +1,4 @@
 require 'rage/ams'
-require 'rage/mts'
 
 module RAGE
   #
@@ -33,8 +32,8 @@ module RAGE
     # A reference to the platform's Agent Messaging System (AMS).
     attr_reader :ams
     
-    # A reference to the platform's Message Transport System (MTS)
-    attr_reader :mts
+    # A reference to the platform's Agent Communication Channel (ACC)
+    attr_reader :acc
 
     # A reference to the platform's Directory Facilitator (DF).
     attr_reader :df
@@ -54,7 +53,7 @@ module RAGE
     def initialize(params={})
       @ams = params[:ams]
       @df = params[:df]
-      @mts = params[:mts]
+      @acc = params[:acc]
       @logger = params[:logger]
       @aid = RAGE::AgentIdentifier.new(:name => params[:name])
       @owner = "My Owner"
@@ -120,7 +119,7 @@ module RAGE
     # field (more than one agent can be specified as message receiver).
     #
     def send_message(msg)
-      mts.send_message(msg)
+      acc.send_message(msg)
     end
     
     #
@@ -170,7 +169,7 @@ module RAGE
     # can also be used by an agent, and is just the same as sending a message
     # to oneself (though slightly faster).
     #
-    def post_message(msg)
+    def post_message(envelope, payload)
       logger.info "A message was posted to the message queue for agent: #{aid.name}"
     end
     

@@ -2,6 +2,7 @@ require 'rage/aid'
 require 'rage/exceptions'
 
 require 'logger'
+require 'thread'
 
 module RAGE
 
@@ -145,32 +146,39 @@ module RAGE
       @aid = RAGE::AgentIdentifier.new(:name => "df@hap_name", :addresses => ["hap_transport_address"])
       @logger = params[:logger] || Logger.new(STDOUT)
       @entries = {}
+      @entries_mutex = Mutex.new
     end
 
     # Register an agent's capabilities, where _entry_ is a DF
     # Agent Description.
     def register(agent_description)
-      unless @entries.key? agent_description.name
-        @entries[agent_description.name] = agent_description
-        logger.info "Registered agent capabilities for #{agent_description.name.name}"
-      else
-        raise FailureException.new("already-registered")
+      @entries_mutex.synchronize do
+        unless @entries.key? agent_description.name
+          @entries[agent_description.name] = agent_description
+          logger.info "Registered agent capabilities for #{agent_description.name.name}"
+        else
+          raise FailureException.new("already-registered")
+        end
       end
     end
     
     def deregister(agent_description)
-      if @entries.key? agent_description.name
-        @entries.delete(agent_description.name)
-      else
-        raise FailureException.new("not-registered")
+      @entries_mutex.synchronize do
+        if @entries.key? agent_description.name
+          @entries.delete(agent_description.name)
+        else
+          raise FailureException.new("not-registered")
+        end
       end
     end
     
     def modify(agent_description)
-      if @entries.key? agent_description.name
-        @entires[agent_description.name] = agent_description
-      else
-        raise FailureException.new("not-registered")
+      @entries_mutex.synchronize do
+        if @entries.key? agent_description.name
+          @entires[agent_description.name] = agent_description
+        else
+          raise FailureException.new("not-registered")
+        end
       end
     end
     
@@ -179,8 +187,10 @@ module RAGE
     #
     def search(pattern, search_constraints=nil)
       matches = []
-      @entries.each do |aid, agent_description|
-        matches << agent_description if agent_description.matches? pattern
+      @entries_mutex.synchronize do
+        @entries.each do |aid, agent_description|
+          matches << agent_description if agent_description.matches? pattern
+        end
       end
       matches
     end

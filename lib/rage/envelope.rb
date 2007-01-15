@@ -43,6 +43,7 @@ module RAGE
 
     public
 
+    attr_reader   :intended_receiver
     attr_reader   :receivers
     attr_accessor :sender
     attr_accessor :comments
@@ -56,17 +57,17 @@ module RAGE
     #
     # Return an initialized Envelope instance.
     #
-    def initialize
-      @receivers = []
-      @sender = nil
-      @comments = nil
-      @acl_representation = nil
-      @payload_length = nil
-      @payload_encoding = nil
-      @date = nil
-      @encrypted = nil
-      @intended_receivers = []
-      @received = nil
+    def initialize(params={})
+      @receivers = params[:receivers] || []
+      @sender = params[:sender]
+      @comments = params[:comments]
+      @acl_representation = params[:acl_representation]
+      @payload_length = params[:payload_length]
+      @payload_encoding = params[:payload_encoding]
+      @date = params[:date]
+      @encrypted = params[:encrypted]
+      @intended_receiver = params[:intended_receiver]
+      @received = params[:received] || []
     end
 
     def add_receiver(name, address)
@@ -120,9 +121,9 @@ module RAGE
         encrypted_elt = params_elt.elements["encrypted"]
         intended_elt = params_elt.elements["intended-receiver"]
         if intended_elt
-          env.intended_receivers.clear # replace previous values, if any
-          intended_elt.each_element("agent-identifier") do |aid_elt|
-            env.intended_receivers << agent_identifier_from_xml(aid_elt)
+          env.intended_receiver = nil # replace previous value, if any
+          intended_elt.each_element("agent-identifier") do |aid_elt| # FIXME: we expect at most one of these
+            env.intended_receiver = agent_identifier_from_xml(aid_elt)
           end
         end
         received = params_elt.elements["received"]
@@ -162,27 +163,6 @@ module RAGE
     #
     def each_receiver(&blk) # :yield: anAID
       receivers.each(&blk)
-    end
-
-    #
-    # Return an array of the intended receivers.
-    #
-    def intended_receivers
-      @intended_receivers
-    end
-
-    #
-    # Return the first of the intended receivers.
-    #
-    def intended_receiver
-      intended_receivers.first
-    end
-
-    #
-    # Iterate over the array of intended receivers.
-    #
-    def each_intended_receiver(&blk) # :yield: anAID
-      intended_receivers.each(&blk)
     end
 
     def agent_identifier_to_xml(root, aid)
@@ -273,6 +253,10 @@ module RAGE
         end
       end
       doc
+    end
+    
+    def mark_as_received(params={})
+      self.received << Received.new(params)
     end
     
   end # class Envelope

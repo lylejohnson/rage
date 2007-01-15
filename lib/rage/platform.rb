@@ -1,6 +1,6 @@
+require 'rage/acc'
 require 'rage/ams'
 require 'rage/df'
-require 'rage/mts'
 
 require 'yaml'
 require 'logger'
@@ -18,8 +18,8 @@ module RAGE
     # A reference to the Logger instance.
     attr_reader :logger
 
-    # A reference to the message transport system (MTS)
-    attr_reader :mts
+    # A reference to the Agent Communication Channel (ACC) for this Agent Platform
+    attr_reader :acc
 
     #
     # Return an initialized Platform instance.
@@ -29,7 +29,7 @@ module RAGE
       @logger = Logger.new(STDOUT)
       @ams = AgentManagementSystem.new(:logger => logger)
       @df = DirectoryFacilitator.new(:logger => logger)
-      @mts = MessageTransportSystem.new(:logger => logger, :ams => ams)
+      @acc = AgentCommunicationChannel.new(:logger => logger, :ams => ams)
       @config = params[:config] || "rage.yaml"
     end
 
@@ -61,7 +61,7 @@ module RAGE
           rescue NameError
             logger.error "Couldn't instantiate an agent of class #{className}"
           end
-          agent = agentClass.new(:ams => ams, :df => df, :mts => mts,:logger => logger, :name => agentName)
+          agent = agentClass.new(:ams => ams, :df => df, :acc => acc, :logger => logger, :name => agentName)
           Thread.new { agent.run }
         end
       end

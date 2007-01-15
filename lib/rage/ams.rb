@@ -2,6 +2,7 @@ require 'rage/aid'
 require 'rage/exceptions'
 
 require 'logger'
+require 'thread'
 
 module RAGE
 
@@ -78,6 +79,7 @@ module RAGE
       @aid = RAGE::AgentIdentifier.new(:name => "ams@hap_name", :addresses => ["hap_transport_address"])
       @agents = {}
       @agent_descriptions = {}
+      @agents_mutex = Mutex.new
       @logger = params[:logger] || Logger.new(STDOUT)
     end
 
@@ -85,29 +87,35 @@ module RAGE
     # Register an agent with the specified AMSAgentDescription.
     #
     def register(agent_description, agent)
-      unless @agents.key? agent_description.name
-        @agents[agent_description.name] = agent
-        @agent_descriptions[agent_description.name] = agent_description
-        @logger.info "registered agent #{agent_description.name.name}"
-      else
-        raise FailureException.new("already-registered")
+      @agents_mutex.synchronize do
+        unless @agents.key? agent_description.name
+          @agents[agent_description.name] = agent
+          @agent_descriptions[agent_description.name] = agent_description
+          @logger.info "registered agent #{agent_description.name.name}"
+        else
+          raise FailureException.new("already-registered")
+        end
       end
     end
     
     def deregister(agent_description)
-      if @agents.key? agent_description.name
-        @agents.delete(agent_description.name)
-        @agent_descriptions.delete(agent_description.name)
-      else
-        raise FailureException.new("not-registered")
+      @agents_mutex.synchronize do
+        if @agents.key? agent_description.name
+          @agents.delete(agent_description.name)
+          @agent_descriptions.delete(agent_description.name)
+        else
+          raise FailureException.new("not-registered")
+        end
       end
     end
     
     def modify(agent_description)
-      if @agents.key? agent_description.name
-        @agent_descriptions[agent_description.name] = agent_description
-      else
-        raise FailureException.new("not-registered")
+      @agents_mutex.synchronize do
+        if @agents.key? agent_description.name
+          @agent_descriptions[agent_description.name] = agent_description
+        else
+          raise FailureException.new("not-registered")
+        end
       end
     end
     
@@ -117,8 +125,10 @@ module RAGE
     #
     def search(pattern, search_constraints=nil)
       matches = []
-      @agent_descriptions.each_value do |agent_description|
-        matches << agent_description if agent_description.matches? pattern
+      @agents_mutex.synchronize do
+        @agent_descriptions.each_value do |agent_description|
+          matches << agent_description if agent_description.matches? pattern
+        end
       end
       matches
     end
@@ -130,7 +140,11 @@ module RAGE
     
     # Return a reference to the agent registered under this AgentIdentifier.
     def agent_for_name(name)
-      @agents[name]
+      agent = nil
+      @agents_mutex.synchronize do
+        agent = @agents[name]
+      end
+      agent
     end
     
   end # class AgentManagementSystem
