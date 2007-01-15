@@ -14,6 +14,9 @@ module RAGE
 
   class AgentCommunicationChannel
 
+    # Returns a reference to the Agent Management System (AMS) for this platform
+    attr_reader :ams
+
     #
     # Return the initialized Agent Communication Channel (ACC)
     # for this Agent Platform.
@@ -21,6 +24,7 @@ module RAGE
     def initialize(params={})
       @logger = params[:logger] || Logger.new(STDOUT)
       @ams = params[:ams]
+      start
     end
     
     #
@@ -40,7 +44,7 @@ module RAGE
     def send_message(envelope, payload)
       
       # FIXME: Mark as received by this ACC
-      envelope.mark_as_received(:by => nil, :from => nil, :date => nil, :id => nil, :via => nil)
+      envelope.mark_as_received(:by => nil, :from => nil, :date => Time.now, :id => nil, :via => nil)
 
       # Build envelopes for all intended receivers
       envelopes = []
@@ -60,12 +64,18 @@ module RAGE
         # Is the intended receiver a local agent?
         agent = ams.agent_for_name(envelope.intended_receiver)
         if agent
+
           agent.post_message(envelope, payload)
+
         else
 
           envelope.intended_receiver.addresses.each do |address|
             # FIXME: Try to deliver the message to this address
             mtp = create_mtp_for(address)
+            if mtp
+              mtp.send_message(envelope, payload)
+              return
+            end
           end
 
           # If we couldn't deliver it to any of the transport addresses,

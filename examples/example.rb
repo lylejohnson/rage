@@ -7,6 +7,7 @@ class Bob < RAGE::Agent
   
   def initialize(params={})
     super
+    setup_behavior
   end
   
   def register_capabilities
@@ -21,11 +22,10 @@ class Bob < RAGE::Agent
     df.register(agent_description)
   end
   
-  def run
-    sleep 10
-    register_capabilities
-    loop do
-      # do something
+  def setup_behavior
+    Thread.new do
+      sleep 10
+      register_capabilities
     end
   end
 
@@ -35,18 +35,21 @@ class Sam < RAGE::Agent
   
   def initialize(params={})
     super
+    setup_behavior
   end
   
-  def run
-    loop do
-      sellers = lookup_booksellers
-      unless sellers.empty?
-        logger.info "Found a bookseller!"
-        contact_booksellers(sellers)
-        break
-      else
-        logger.info "No booksellers available, sleeping..."
-        sleep 5
+  def setup_behavior
+    Thread.new do
+      loop do
+        sellers = lookup_booksellers
+        unless sellers.empty?
+          logger.info "Found a bookseller!"
+          contact_booksellers(sellers)
+          break
+        else
+          logger.info "No booksellers available, sleeping..."
+          sleep 5
+        end
       end
     end
   end
@@ -57,16 +60,14 @@ class Sam < RAGE::Agent
     df.search(agent_description)
   end
   
-  def contact_booksellers(agents)
+  def contact_booksellers(agent_descriptions)
     msg = RAGE::Message.new(
       :performative => "query", 
       :sender => aid,
+      :receivers => agent_descriptions.map { |x| x.name },
       :content => "content goes here"
     )
-    agents.each do |agent|
-      msg.receiver = agent.name
-      send_message(msg)
-    end
+    send_message(msg)
   end
 
 end

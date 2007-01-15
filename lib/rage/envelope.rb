@@ -43,7 +43,7 @@ module RAGE
 
     public
 
-    attr_reader   :intended_receiver
+    attr_accessor :intended_receiver
     attr_reader   :receivers
     attr_accessor :sender
     attr_accessor :comments
