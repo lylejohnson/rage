@@ -1,0 +1,422 @@
+<?xml version="1.0"?>
+<!DOCTYPE owl [
+     <!ENTITY fipaacl  "http://taga.umbc.edu/ontologies/fipaacl#" >
+     <!ENTITY owl  "http://www.w3.org/2002/7/owl#" >
+     <!ENTITY xsd  "http://www.w3.org/2000/10/XMLSchema#" >
+   ]>
+
+<rdf:RDF
+  xmlns     = "http://http://taga.umbc.edu/ontologies/fipaacl#"
+  xmlns:fipaacl = "http://taga.umbc.edu/ontologies/fipaacl#"
+  xmlns:owl = "http://www.w3.org/2002/7/owl#"
+  xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs= "http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd = "http://www.w3.org/2000/10/XMLSchema#">
+
+  <owl:Ontology rdf:about="http://taga.umbc.edu/ontologies/fipaacl.owl">
+    <rdfs:comment>
+	OWL content language for FIPA ACL
+    </rdfs:comment>
+     <owl:versionInfo>2.0</owl:versionInfo>
+  </owl:Ontology>
+
+<!--
+    OWL content language for FIPA acl message.
+    Used in TAGA game (http://taga.umbc.edu)
+
+    Author: Youyong Zou  yzou1@cs.umbc.edu
+    Date:  Sep 30,2003
+-->
+  
+  <owl:Class rdf:ID="Action">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#act" />
+	<owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#actor" />
+        <owl:minCardinality>1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:DatatypeProperty rdf:ID="actionParameter">
+  	<rdfs:domain rdf:resource="#Action"/>
+  </owl:DatatypeProperty>
+
+<!-- some frequently used act includes: forwardMessage, register, deregister, 
+	newInstance, informOntology, -->
+  <owl:DatatypeProperty rdf:ID="act">
+  	<rdfs:domain rdf:resource="#Action"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+  <owl:ObjectProperty rdf:ID="actor"/>
+  <owl:ObjectProperty rdf:ID="target"/>
+
+ <owl:Class rdf:ID="Result">
+     <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#fromAction" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#done" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+ </owl:Class>
+
+  <owl:ObjectProperty rdf:ID="output">
+  	<rdfs:domain rdf:resource="#Result"/>
+  </owl:ObjectProperty>
+ <owl:DatatypeProperty rdf:ID="done">
+  	<rdfs:domain rdf:resource="#Result"/>
+        <rdfs:range rdf:resource="&xsd;boolean"/>
+  </owl:DatatypeProperty>
+
+  <owl:ObjectProperty rdf:ID="fromAction">
+        <rdfs:range rdf:resource="#Action"/>
+  </owl:ObjectProperty>
+
+ <owl:Class rdf:ID="Effect">
+     <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#fromAction" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+ </owl:Class>
+  <owl:ObjectProperty rdf:ID="oneEffect">
+  	<rdfs:domain rdf:resource="#Effect"/>
+   </owl:ObjectProperty>
+
+<!-- Agent Platform : FIPA agents exist physically on an Agent Platform and
+     utilise a list of services provided by Agent Platform
+     Those services may include DF, AMS, et.-->
+<owl:Class rdf:ID="AgentPlatform">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#platformName" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+</owl:Class>
+
+<owl:DatatypeProperty rdf:ID="platformName">
+        <rdfs:domain rdf:resource="#AgentPlatform"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+  <owl:ObjectProperty rdf:ID="hasService">
+        <rdfs:range rdf:resource="#Service"/>
+  </owl:ObjectProperty>
+
+
+<!-- Agent Naming  -->
+ <owl:Class rdf:ID="FIPAAgent">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#agentName" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#agentAddress" />
+        <owl:minCardinality>1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+ </owl:Class>
+
+  <owl:DatatypeProperty rdf:ID="agentName">
+        <rdfs:domain rdf:resource="#FIPAAgent"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="agentAddress">
+        <rdfs:domain rdf:resource="#FIPAAgent"/>
+        <rdfs:range rdf:resource="&xsd;anyURI"/>
+  </owl:DatatypeProperty>
+
+  <owl:ObjectProperty rdf:ID="provideService">
+        <rdfs:range rdf:resource="#Service"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="atPlatform">
+        <rdfs:domain rdf:resource="#FIPAAgent"/>
+        <rdfs:range rdf:resource="#AgentPlatform"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="belief">
+        <rdfs:domain rdf:resource="#FIPAAgent"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="intend">
+        <rdfs:domain rdf:resource="#FIPAAgent"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="desire">
+        <rdfs:domain rdf:resource="#FIPAAgent"/>
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty  rdf:ID="agentStatus">
+        <rdfs:domain rdf:resource="#FIPAAgent"/>
+	<rdfs:range>
+   		<owl:DataRange>
+		<owl:oneOf>
+	<rdf:List>
+	<rdf:first rdf:datatype="&xsd;string">waiting</rdf:first>
+	<rdf:rest>
+       	<rdf:List>
+        <rdf:first rdf:datatype="&xsd;string">suspended</rdf:first>
+	<rdf:rest>
+         	<rdf:List>
+          <rdf:first rdf:datatype="&xsd;string">active</rdf:first>
+          	<rdf:rest>
+            		<rdf:List>
+              	  <rdf:first rdf:datatype="&xsd;string">transit</rdf:first>
+ 			<rdf:rest>
+            	  		<rdf:List>
+                   <rdf:first rdf:datatype="&xsd;string">initiated</rdf:first>
+		   <rdf:rest rdf:resource="rdf:nil"/>
+		  		</rdf:List>
+          		</rdf:rest>
+           		</rdf:List>
+         	</rdf:rest>
+       		</rdf:List>
+ 	</rdf:rest>
+        </rdf:List>
+	</rdf:rest>
+	</rdf:List>
+    </owl:oneOf>
+   </owl:DataRange>
+  </rdfs:range>
+	</owl:DatatypeProperty>
+
+<!-- Service is a set of action supported by the agents  -->
+ <owl:Class rdf:ID="Service">
+  <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#serviceName" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#serviceProfile"/>
+        <owl:minCardinality>1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+ </owl:Class>
+
+ <owl:DatatypeProperty rdf:ID="serviceName">
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="serviceProfile">
+        <rdfs:range rdf:resource="&xsd;anyURI"/>
+  </owl:DatatypeProperty>
+
+ <owl:ObjectProperty rdf:ID="serviceProvider">
+	<owl:inverseOf rdf:resource="#provideService"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="serviceType">
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ownership">
+        <rdfs:domain rdf:resource="#Service"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="serviceProtocol">
+	<rdfs:domain rdf:resource="#Service"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="serviceOntology">
+        <rdfs:domain rdf:resource="#Service"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="serviceLanguage">
+        <rdfs:domain rdf:resource="#Service"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="serviceParameter">
+        <rdfs:domain rdf:resource="#Service"/>
+  </owl:DatatypeProperty>
+
+ <owl:Class rdf:ID="Question">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#questionLanguage" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#ask" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+ </owl:Class>
+
+ <owl:DatatypeProperty rdf:ID="questionLanguage">
+        <rdfs:domain rdf:resource="#Question"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+ <owl:ObjectProperty rdf:ID="ask">
+        <rdfs:domain rdf:resource="#Question"/>
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty rdf:ID="answerNumber">
+        <rdfs:domain rdf:resource="#Question"/>
+        <rdfs:range rdf:resource="&xsd;int"/>
+  </owl:DatatypeProperty>
+
+<!-- The answer to one question is either return a list of answers, or 
+     fail and give failure reason  -->
+ <owl:Class rdf:ID="Answer">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasQuestion" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+ </owl:Class>
+
+ <owl:ObjectProperty rdf:ID="hasAnswer">
+	<rdfs:domain rdf:resource="#Answer"/>
+ </owl:ObjectProperty>
+
+ <owl:ObjectProperty rdf:ID="hasQuestion">
+        <rdfs:domain rdf:resource="#Answer"/>
+        <rdfs:range rdf:resource="#Question"/>
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty rdf:ID="questionFailure">
+        <rdfs:domain rdf:resource="#Answer"/>
+        <rdfs:range rdf:resource="&xsd;boolean"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="failureReason">
+        <rdfs:domain rdf:resource="#Answer"/>
+  </owl:DatatypeProperty>
+
+
+ <owl:Class rdf:ID="Rule">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#ruleLanguage" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#ruleContent" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+ </owl:Class>
+
+ <owl:DatatypeProperty rdf:ID="ruleLanguage">
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+ <owl:DatatypeProperty rdf:ID="ruleContent"/>
+
+<!--
+	define ACL message: 
+-->
+ <owl:Class rdf:ID="ACLMessage">
+	<rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#performative" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#sender" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#receiver" />
+        <owl:minCardinality>1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#content" />
+        <owl:cardinality>1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+ </owl:Class>
+
+  <owl:DatatypeProperty rdf:ID="performative">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+ <owl:ObjectProperty rdf:ID="sender">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="#FIPAAgent"/>
+  </owl:ObjectProperty>
+
+ <owl:ObjectProperty rdf:ID="receiver">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="#FIPAAgent"/>
+  </owl:ObjectProperty>
+
+ <owl:ObjectProperty rdf:ID="reply-to">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="#FIPAAgent"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="content">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+  </owl:ObjectProperty>
+
+ <owl:DatatypeProperty rdf:ID="language">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+ <owl:DatatypeProperty rdf:ID="encoding">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+ <owl:DatatypeProperty rdf:ID="ontology">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+ <owl:DatatypeProperty rdf:ID="protocol">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="conversation-id">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+ <owl:ObjectProperty rdf:ID="reply-with">
+	<rdfs:domain rdf:resource="#ACLMessage"/>
+ </owl:ObjectProperty>
+
+ <owl:ObjectProperty rdf:ID="in-reply-to">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+ </owl:ObjectProperty>
+
+ <owl:DatatypeProperty  rdf:ID="reply-by">
+        <rdfs:domain rdf:resource="#ACLMessage"/>
+	<rdfs:range rdf:resource="&xsd;dateTime"/>
+</owl:DatatypeProperty>
+
+</rdf:RDF>
