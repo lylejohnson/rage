@@ -133,8 +133,17 @@ module RAGE
       logger.info "Agent #{name} is now waiting for messages..."
       loop do
         msg = blocking_receive
-        handle_message(msg)
+        method_id = performative_handler(msg.performative)
+        if respond_to? method_id
+          send(method_id, msg)
+        else
+          handle_message(msg)
+        end
       end
+    end
+    
+    def performative_handler(performative)
+      "handle_#{performative}".to_sym
     end
     
     # Handle a message

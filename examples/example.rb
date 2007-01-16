@@ -27,6 +27,10 @@ class Bob < RAGE::Agent
     df.register(agent_description)
   end
   
+  def handle_query(msg)
+    logger.info "#{name} received message with content: #{msg.content}"
+  end
+  
 end
 
 class Sam < RAGE::Agent

@@ -41,6 +41,10 @@ module RAGE
       df.register(agent_description)
     end
     
+    def handle_request(msg)
+      # FIXME
+    end
+    
   end # class AMSAgent
   
 end # module RAGE
