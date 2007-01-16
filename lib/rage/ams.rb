@@ -1,4 +1,5 @@
 require 'rage/aid'
+require 'rage/df'
 require 'rage/exceptions'
 
 require 'logger'
@@ -76,7 +77,6 @@ module RAGE
     # Return an initialized AgentManagementSystem (AMS) instance.
     #
     def initialize(params={})
-      @aid = RAGE::AgentIdentifier.new(params)
       @agents = {}
       @agent_descriptions = {}
       @ams_mutex = Mutex.new

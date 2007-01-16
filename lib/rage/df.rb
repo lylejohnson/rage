@@ -133,9 +133,6 @@ module RAGE
   #
   class DirectoryFacilitator
     
-    # Agent identifier
-    attr_reader :aid
-
     # A reference to the platform logger
     attr_reader :logger
 
@@ -143,7 +140,6 @@ module RAGE
     # Return an initialized DirectoryFacilitator instance.
     #
     def initialize(params={})
-      @aid = RAGE::AgentIdentifier.new(params)
       @logger = params[:logger] || Logger.new(STDOUT)
       @entries = {}
       @entries_mutex = Mutex.new
@@ -196,6 +192,6 @@ module RAGE
     end
 
   end # class DirectoryFacilitator
-  
+    
 end # module RAGE
 

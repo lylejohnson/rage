@@ -1,6 +1,8 @@
 require 'rage/acc'
 require 'rage/ams'
+require 'rage/ams_agent'
 require 'rage/df'
+require 'rage/df_agent'
 
 require 'yaml'
 require 'logger'
@@ -33,6 +35,30 @@ module RAGE
       @acc = AgentCommunicationChannel.new(:logger => logger, :ams => ams)
       @config = params[:config] || "rage.yaml"
     end
+    
+    def start_ams_agent
+      agent = AMSAgent.new(
+        :ams => ams,
+        :df => df,
+        :acc => acc,
+        :logger => logger,
+        :name => fully_qualified_agent_name("ams"),
+        :addresses => agent_transport_addresses
+      )
+      Thread.new { agent.run }
+    end
+    
+    def start_df_agent
+      agent = DFAgent.new(
+        :ams => ams,
+        :df => df,
+        :acc => acc,
+        :logger => logger,
+        :name => fully_qualified_agent_name("df"),
+        :addresses => agent_transport_addresses
+      )
+      Thread.new { agent.run }
+    end
 
     #
     # Return a Class given its name, borrowed from http://www.rubygarden.org/ruby?FindClassesByName.
@@ -47,6 +73,10 @@ module RAGE
     # Start running.
     #
     def run
+      # Start platform agents
+      start_ams_agent
+      start_df_agent
+      
       # Start up agents listed in configuration file
       if File.exist?(@config)
         hostname = Socket.gethostname
