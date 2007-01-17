@@ -112,9 +112,8 @@ module RAGE
       end
     end
     
-=begin
     def empty_message_buffer
-      do
+      loop do
         messages = nil
         @mutex.synchronize do
           messages = @buffered_messages.dup
@@ -140,7 +139,6 @@ module RAGE
         sleep 5 # FIXME: How to make this a low priority thread?
       end
     end
-=end
     
     #
     # Return a suitable Message Transport Protocol (MTP) for the
