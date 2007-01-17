@@ -173,6 +173,7 @@ module RAGE
     def suspend
       raise StateTransitionError.new(@state, :suspended) unless @state == :active
       @state = :suspended
+      logger.info "Agent #{name} is suspended"
     end
     
     #
@@ -182,6 +183,7 @@ module RAGE
     def resume
       raise StateTransitionError.new(@state, :active) unless @state == :suspended
       @state = :active
+      logger.info "Agent #{name} has resumed"
     end
     
     # 
