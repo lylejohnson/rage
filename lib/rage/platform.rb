@@ -1,7 +1,4 @@
-require 'rage/acc'
-require 'rage/ams'
 require 'rage/ams_agent'
-require 'rage/df'
 require 'rage/df_agent'
 
 require 'yaml'

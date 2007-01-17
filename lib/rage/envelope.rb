@@ -1,6 +1,5 @@
 require 'rexml/document'
 require 'time'
-require 'rage/aid'
 
 module RAGE
 

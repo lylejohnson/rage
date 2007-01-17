@@ -1,6 +1,6 @@
 module RAGE
 
-  class FailureException < RuntimeError
+  class FailureError < RuntimeError
     
     attr_reader :predicate_symbol
 
@@ -8,6 +8,18 @@ module RAGE
       @predicate_symbol
     end
     
-  end
+  end # class FailureError
+  
+  class StateTransitionError < RuntimeError
+    
+    attr_reader :old_state
+    attr_reader :new_state
+
+    def initialize(old_state, new_state)
+      @old_state = old_state
+      @new_state = new_state
+    end
+
+  end # class StateTransitionError
   
 end

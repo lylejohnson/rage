@@ -1,6 +1,3 @@
-require 'rage/ams'
-require 'rage/envelope'
-
 require 'thread'
 
 module RAGE
@@ -44,7 +41,7 @@ module RAGE
     # Platform logger instance
     attr_reader :logger
 
-    # The life cycle state of the agent (one of :initiated, :active, :suspended, :waiting or :transit)
+    # The life cycle state of the agent (one of :initiated, :active, :suspended, :waiting, :transit or :unknown)
     attr_reader :state
     
     # The owner of this agent (a string)
@@ -64,7 +61,7 @@ module RAGE
         :resolvers => params[:resolvers]
       )
       @owner = "My Owner"
-      @state = :active
+      @state = :initiated
       agent_description = RAGE::AMSAgentDescription.new(
         :name => aid,
         :ownership => owner,
@@ -158,6 +155,86 @@ module RAGE
       else
         raise RuntimeError, "no block given"
       end
+    end
+    
+    # Invoke a new agent; changes its state from initiated to active.
+    def invoke
+      raise StateTransitionError.new(@state, :active) unless @state == :initiated
+      @state = :active
+    end
+    
+    #
+    # Put agent into a suspended state.
+    # This can be initiated by the agent or the AMS.
+    #
+    def suspend
+      raise StateTransitionError.new(@state, :suspended) unless @state == :active
+      @state = :suspended
+    end
+    
+    #
+    # Brings the agent from a suspended state.
+    # This can only be initiated by the AMS
+    #
+    def resume
+      raise StateTransitionError.new(@state, :active) unless @state == :suspended
+      @state = :active
+    end
+    
+    # 
+    # Puts agent into a waiting state.
+    # This can only be initiated by an agent.
+    #
+    def wait
+      raise StateTransitionError.new(@state, :waiting) unless @state == :active
+      @state = :waiting
+    end
+    
+    private :wait
+    
+    #
+    # Brings the agent from a waiting state.
+    # This can only be initiated by the AMS.
+    #
+    def wake_up
+      raise StateTransitionError.new(@state, :active) unless @state == :waiting
+      @state = :active
+    end
+    
+    #
+    # Puts the agent in a transitory state.
+    # This can only be initiated by the agent.
+    #
+    def move
+      raise StateTransitionError.new(@state, :transit) unless @state == :active
+      @state = :transit
+    end
+    
+    private :move
+
+    #
+    # Brings the agent from a transitory state.
+    # This can only be initiated by the AMS.
+    #
+    def execute
+      raise StateTransitionError.new(@state, :active) unless @state == :transit
+      @state = :active
+    end
+    
+    #
+    # Forceful termination of the agent.
+    # This can only be initiated by the AMS and cannot be ignored by the agent.
+    #
+    def destroy
+      @state = :unknown
+    end
+    
+    #
+    # Graceful termination of an agent.
+    # This can be ignored by the agent.
+    #
+    def quit
+      @state = :unknown
     end
     
   end # class Agent

@@ -1,6 +1,4 @@
-require 'rage/agent'
-require 'rage/message'
-require 'rage/platform'
+require 'rage/rage'
 
 # Bob is the seller
 class Bob < RAGE::Agent

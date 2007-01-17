@@ -1,4 +1,3 @@
-require 'rage/aid'
 require 'rage/xmlcodec'
 
 module RAGE

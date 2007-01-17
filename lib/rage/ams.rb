@@ -1,7 +1,3 @@
-require 'rage/aid'
-require 'rage/df'
-require 'rage/exceptions'
-
 require 'logger'
 require 'thread'
 

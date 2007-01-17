@@ -1,0 +1,25 @@
+Ideas
+=====
+
+ * Behaviors as mixins
+ * Web interface for agent management
+ * Web-based message viewer
+ * Federated search for directory facilitator
+ * Support for RDF or OWL content language
+ * Helpers for constructing message content
+   - Does the FIPA-OWL ontology include stuff like agent registrations, service descriptions, etc.?
+ * Mobility
+   - Using ruby2ruby?
+
+Kinds of Agents
+===============
+
+ * News feed monitor (RSS/Atom)
+ * E-mail monitor (POP)
+ * Front-end to web service
+ * Text messaging agent
+
+Unfinished Business
+===================
+
+ * SLCodec (slcodec.rb) and related grammar (slparser.y) for SL message content

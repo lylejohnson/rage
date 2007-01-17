@@ -36,7 +36,16 @@ module RAGE
     end
     
     def handle_request(msg)
-      # FIXME
+      action = msg.content
+      case action.act
+      when "register"
+      when "deregister"
+      when "modify"
+      when "search"
+      when "get-description"
+      else
+        raise RuntimeError, "unexpected message content"
+      end
     end
 
   end # class DFAgent
