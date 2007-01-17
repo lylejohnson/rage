@@ -33,8 +33,8 @@ module RAGE
       @config = params[:config] || "rage.yaml"
     end
     
-    def start_ams_agent
-      agent = AMSAgent.new(
+    def create_ams_agent
+      AMSAgent.new(
         :ams => ams,
         :df => df,
         :acc => acc,
@@ -42,11 +42,10 @@ module RAGE
         :name => fully_qualified_agent_name("ams"),
         :addresses => agent_transport_addresses
       )
-      Thread.new { agent.run }
     end
     
-    def start_df_agent
-      agent = DFAgent.new(
+    def create_df_agent
+      DFAgent.new(
         :ams => ams,
         :df => df,
         :acc => acc,
@@ -54,7 +53,6 @@ module RAGE
         :name => fully_qualified_agent_name("df"),
         :addresses => agent_transport_addresses
       )
-      Thread.new { agent.run }
     end
 
     #
@@ -70,11 +68,11 @@ module RAGE
     # Start running.
     #
     def run
-      # Start platform agents
-      start_ams_agent
-      start_df_agent
+      # Create platform agents
+      create_ams_agent
+      create_df_agent
       
-      # Start up agents listed in configuration file
+      # Create agents listed in configuration file
       if File.exist?(@config)
         hostname = Socket.gethostname
         startup = YAML::load(File.open(@config, "r"))
@@ -98,9 +96,11 @@ module RAGE
             :name => fully_qualified_agent_name(agent_name),
             :addresses => agent_transport_addresses
           )
-          Thread.new { agent.run }
         end
       end
+      
+      # Start (invoke) all agents
+      ams.invoke_all_agents
     end
     
     def hostname

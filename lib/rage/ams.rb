@@ -47,7 +47,7 @@ module RAGE
     # The owner of the agent (a string)
     attr_reader :ownership
     
-    # The life cycle state of the agent (one of :initiated, :active, :suspended, :waiting or :transit)
+    # The life cycle state of the agent (one of :initiated, :active, :suspended, :waiting, :transit or :unknown)
     attr_reader :state
 
     # Return an initialized agent description
@@ -75,7 +75,7 @@ module RAGE
     def initialize(params={})
       @agents = {}
       @agent_descriptions = {}
-      @ams_mutex = Mutex.new
+      @mutex = Mutex.new
       @logger = params[:logger] || Logger.new(STDOUT)
     end
     
@@ -87,7 +87,7 @@ module RAGE
     # Register an agent with the specified AMSAgentDescription.
     #
     def register(agent_description, agent)
-      @ams_mutex.synchronize do
+      @mutex.synchronize do
         unless @agents.key? agent_description.name
           @agents[agent_description.name] = agent
           @agent_descriptions[agent_description.name] = agent_description
@@ -99,7 +99,7 @@ module RAGE
     end
     
     def deregister(agent_description)
-      @ams_mutex.synchronize do
+      @mutex.synchronize do
         if @agents.key? agent_description.name
           @agents.delete(agent_description.name)
           @agent_descriptions.delete(agent_description.name)
@@ -110,7 +110,7 @@ module RAGE
     end
     
     def modify(agent_description)
-      @ams_mutex.synchronize do
+      @mutex.synchronize do
         if @agents.key? agent_description.name
           @agent_descriptions[agent_description.name] = agent_description
         else
@@ -125,7 +125,7 @@ module RAGE
     #
     def search(pattern, search_constraints=nil)
       matches = []
-      @ams_mutex.synchronize do
+      @mutex.synchronize do
         @agent_descriptions.each_value do |agent_description|
           matches << agent_description if agent_description.matches? pattern
         end
@@ -136,7 +136,7 @@ module RAGE
     # Return the platform profile of the AP for this AMS
     def get_description
       response = nil
-      @ams_mutex.synchronize do
+      @mutex.synchronize do
         if @description.nil?
           @description = APDescription.new(
             :name => "MyAPDescription",
@@ -157,10 +157,19 @@ module RAGE
     # Return a reference to the agent registered under this AgentIdentifier.
     def agent_for_name(name)
       agent = nil
-      @ams_mutex.synchronize do
+      @mutex.synchronize do
         agent = @agents[name]
       end
       agent
+    end
+    
+    def invoke_all_agents
+      agents = nil
+      @mutex.synchronize { agents = @agents.dup }
+      agents.each_value do |agent|
+        agent.invoke
+        Thread.new { agent.run }
+      end
     end
     
   end # class AgentManagementSystem

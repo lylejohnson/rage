@@ -157,6 +157,9 @@ module RAGE
       end
     end
     
+    # Returns +true+ if the agent's state is active.
+    def active?; @state == :active; end
+    
     # Invoke a new agent; changes its state from initiated to active.
     def invoke
       raise StateTransitionError.new(@state, :active) unless @state == :initiated

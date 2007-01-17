@@ -1,4 +1,5 @@
 require 'drb'
+require 'thread'
 require 'uri'
 
 # Disable eval() and friends
@@ -24,6 +25,8 @@ module RAGE
     def initialize(params={})
       @logger = params[:logger] || Logger.new(STDOUT)
       @ams = params[:ams]
+      @buffered_messages = []
+      @mutex = Mutex.new
       start
     end
     
@@ -65,7 +68,11 @@ module RAGE
         agent = ams.agent_for_name(envelope.intended_receiver)
         if agent
 
-          agent.post_message(envelope, payload)
+          if agent.active?
+            agent.post_message(envelope, payload)
+          else
+            buffer_message(envelope, payload)
+          end
 
         else
 
@@ -91,6 +98,49 @@ module RAGE
       end
       
     end
+    
+    #
+    # Buffer a message for an agent that is currently inactive.
+    # FIXME: Add a thread to empty the buffer!
+    #
+    def buffer_message(envelope, payload)
+      @mutex.synchronize do
+        @buffered_messages << [envelope, payload]
+      end
+      if @buffer_emptier_thread.nil?
+        @buffer_emptier_thread = Thread.new { empty_message_buffer }
+      end
+    end
+    
+=begin
+    def empty_message_buffer
+      do
+        messages = nil
+        @mutex.synchronize do
+          messages = @buffered_messages.dup
+        end
+        delivered_messages = []
+        messages.each do |msg|
+          envelope, payload = *msg
+          agent = ams.agent_for_name(envelope.intended_receiver)
+          if agent
+            if agent.active?
+              agent.post_message(envelope, payload)
+              delivered_messages << msg
+            end
+          else
+            # FIXME: Intended receiver is no longer registered with this AMS?
+          end
+        end
+        @mutex.synchronize do
+          delivered_messages.each do |msg|
+            @buffered_messages.remove(msg)
+          end
+        end
+        sleep 5 # FIXME: How to make this a low priority thread?
+      end
+    end
+=end
     
     #
     # Return a suitable Message Transport Protocol (MTP) for the
