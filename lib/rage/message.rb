@@ -91,7 +91,7 @@ module RAGE
         @receivers = params[:receivers] || []
       end
     end
-
+    
     #
     # Return an array of the intended recipient(s) of the message.
     #
@@ -154,6 +154,21 @@ module RAGE
     #
     def to_xml
       RAGE::XMLCodec.new.encode(self)
+    end
+    
+    #
+    # Create a new message which is a reply to this one.
+    # The new message's receiver will be initialized to this message's
+    # sender, and the new message's in-reply-to slot will be initialized
+    # to this message's reply-with value.
+    #
+    def create_reply
+      msg = self.dup
+      msg.performative = "agree"
+      msg.receiver = msg.sender
+      msg.sender = aid
+      msg.in_reply_to = msg.reply_with
+      msg
     end
     
   end # class Message
