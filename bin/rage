@@ -1,5 +1,16 @@
 #!/usr/bin/env ruby
 
+require File.join(File.dirname(__FILE__), "../lib/rage/version")
+
+if %w(--version -v).include? ARGV.first
+  puts "RAGE #{RAGE::VERSION::STRING}"
+  exit 0
+end
+
 require 'fileutils'
 
-FileUtils.mkdir ARGV[0]
+basedir = ARGV[0]
+FileUtils.mkdir basedir
+FileUtils.touch File.join(basedir, "Rakefile")
+FileUtils.mkdir File.join(basedir, "log")
+FileUtils.mkdir File.join(basedir, "script")
