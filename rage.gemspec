@@ -1,17 +1,30 @@
 require 'rubygems'
 
 spec = Gem::Specification.new do |s|
+  
   s.name = 'rage'
-  s.version = "1.0.0"
+  s.version = "0.0.1"
   s.platform = Gem::Platform::RUBY
   s.summary = "Ruby Agent Environment"
-  s.files = Dir.glob("lib/rage/*.rb")
-  s.require_paths = ['lib']
-  s.autorequire = 'rage'
+  
   s.author = "Lyle Johnson"
-  s.email = "lyle@knology.net"
-  s.rubyforge_project = "rage"
-  s.homepage = "http://rage.rubyforge.org"
+  s.email = "ljohnson@sentar.com"
+  s.homepage = "http://www.sentar.com/"
+
+  s.files  = Dir["bin/*"]
+  s.files << Dir["doc/*"]
+  s.files << Dir["lib/rage/**/*.rb"]
+  s.files << Dir["schemas/*"]
+  s.files << Dir["tests/*"]
+  
+  s.test_files = Dir["tests/TC_*.rb"]
+  
+  s.require_paths = ['lib']
+  s.bindir = "bin"
+  s.has_rdoc = true
+
+# s.add_dependency("camping")
+
 end
 
 if FILE == $0
