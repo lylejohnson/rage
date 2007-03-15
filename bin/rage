@@ -7,10 +7,6 @@ if %w(--version -v).include? ARGV.first
   exit 0
 end
 
-require 'fileutils'
+require File.join(File.dirname(__FILE__), "../lib/rage/generators/application")
 
-basedir = ARGV[0]
-FileUtils.mkdir basedir
-FileUtils.touch File.join(basedir, "Rakefile")
-FileUtils.mkdir File.join(basedir, "log")
-FileUtils.mkdir File.join(basedir, "script")
+RAGE::Generators::ApplicationGenerator.new(ARGV)
