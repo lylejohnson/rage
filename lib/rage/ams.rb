@@ -172,6 +172,12 @@ module RAGE
       end
     end
     
+    def each_agent
+      @mutex.synchronize do
+        @agents.each_value { |desc| yield desc }
+      end
+    end
+    
   end # class AgentManagementSystem
   
 end # module RAGE
