@@ -12,22 +12,18 @@ spec = Gem::Specification.new do |s|
   s.homepage = "http://www.sentar.com/"
 
   s.files  = Dir["bin/*"]
-  s.files << Dir["doc/*"]
-  s.files << Dir["lib/rage/**/*.rb"]
-  s.files << Dir["schemas/*"]
-  s.files << Dir["tests/*"]
+  s.files += Dir["doc/*"]
+  s.files += Dir["lib/rage/**/*.rb"]
+  s.files += Dir["schemas/*"]
+  s.files += Dir["tests/*"]
   
   s.test_files = Dir["tests/TC_*.rb"]
   
-  s.require_paths = ['lib']
+  s.require_path = 'lib'
   s.bindir = "bin"
+  s.executables << "rage"
   s.has_rdoc = true
 
 # s.add_dependency("camping")
 
 end
-
-if FILE == $0
-  Gem::Builder.new(spec).build
-end
-
