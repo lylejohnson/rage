@@ -9,4 +9,4 @@ end
 
 require File.join(File.dirname(__FILE__), "../lib/rage/generators/application")
 
-RAGE::Generators::ApplicationGenerator.new(ARGV)
+RAGE::Generators::ApplicationGenerator.new.run(ARGV)
