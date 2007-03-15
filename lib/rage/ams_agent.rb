@@ -20,9 +20,25 @@ module RAGE
       action = msg.content
       case action.act
       when "register"
+        agree_to(msg, :precondition => true)
+        agent_description = msg.content.arguments.first
+        ams.register(agent_description)
+        inform_done(msg)
       when "deregister"
+        agree_to(msg, :precondition => true)
+        agent_description = msg.content.arguments.first
+        ams.deregister(agent_description)
+        inform_done(msg)
       when "modify"
+        agree_to(msg, :precondition => true)
+        agent_description = msg.content.arguments.first
+        ams.modify(agent_description)
+        inform_done(msg)
       when "search"
+        agree_to(msg, :precondition => true)
+        agent_description = msg.content.arguments.first
+        ams.register(agent_description)
+        inform_result(msg)
       when "get-description"
       else
         raise RuntimeError, "unexpected message content"

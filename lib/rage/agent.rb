@@ -1,3 +1,5 @@
+require 'rage/message_helper'
+
 require 'thread'
 
 module RAGE
@@ -25,6 +27,8 @@ module RAGE
   # adding specific behaviors as needed and exploiting Agent class capabilities.
   #
   class Agent
+    
+    include MessageHelper
 
     # The agent identifier (AID) for this agent.
     attr_accessor :aid

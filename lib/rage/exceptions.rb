@@ -1,5 +1,6 @@
 module RAGE
 
+  # Corresponds to the failure message sent from one agent to another
   class FailureError < RuntimeError
     
     attr_reader :predicate_symbol
@@ -9,6 +10,10 @@ module RAGE
     end
     
   end # class FailureError
+  
+  # Corresponds to a not-understood message sent from one agent to another
+  class NotUnderstoodError < RuntimeError
+  end # class NotUnderstoodError
   
   class StateTransitionError < RuntimeError
     
