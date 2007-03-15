@@ -11,7 +11,7 @@ module RAGE
       )
       agent_description = RAGE::DFAgentDescription.new(
         :name => aid,
-        :services => [ service_description ],
+        :services => [ service_description ]
       )
       df.register(agent_description)
     end
