@@ -20,6 +20,11 @@ module RAGE
 
     # A reference to the Agent Communication Channel (ACC) for this Agent Platform
     attr_reader :acc
+    
+    # Returns a reference to the Platform instance
+    def Platform.instance
+      @@instance
+    end
 
     #
     # Return an initialized Platform instance.
@@ -31,6 +36,7 @@ module RAGE
       @df = DirectoryFacilitator.new(:name => fully_qualified_agent_name("df"), :addresses => agent_transport_addresses, :logger => logger)
       @acc = AgentCommunicationChannel.new(:logger => logger, :ams => ams)
       @config = params[:config] || "rage.yaml"
+      @@instance = self
     end
     
     def create_ams_agent
@@ -101,6 +107,9 @@ module RAGE
       
       # Start (invoke) all agents
       ams.invoke_all_agents
+      
+      # Start the dashboard
+      start_dashboard
     end
     
     def hostname
@@ -115,6 +124,11 @@ module RAGE
       "#{name}@#{hostname}"
     end
     
+    def start_dashboard
+      require 'rage/web/dashboard'
+      Thread.new { RAGE::Web::Server.new.start }
+    end
+    
   end # class Platform
   
 end # module RAGE
@@ -123,4 +137,3 @@ if __FILE__ == $0
   RAGE::Platform.new.run
   Thread.list.each { |t| t.join if t != Thread.main }
 end
-
