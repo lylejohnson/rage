@@ -14,13 +14,13 @@ class Bob < RAGE::Agent
   end
   
   def register_capabilities
-    service_description = RAGE::ServiceDescription.new(
+    service = RAGE::ServiceDescription.new(
       :name => "Bob's Books",
       :type => "bookseller"
     )
     agent_description = RAGE::DFAgentDescription.new(
       :name => aid,
-      :services => [service_description]
+      :services => [ service ]
     )
     df.register(agent_description)
   end
@@ -54,7 +54,7 @@ class Sam < RAGE::Agent
   
   def lookup_booksellers
     service_description = RAGE::ServiceDescription.new(:type => "bookseller")
-    agent_description = RAGE::DFAgentDescription.new(:services => [service_description])
+    agent_description = RAGE::DFAgentDescription.new(:services => [ service_description ])
     df.search(agent_description)
   end
   
