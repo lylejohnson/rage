@@ -11,6 +11,11 @@ Ideas
  * Mobility
    - Using ruby2ruby?
 
+Bugs
+====
+
+ * AMS should maintain agent state, not the agent itself
+
 Kinds of Agents
 ===============
 
@@ -18,6 +23,8 @@ Kinds of Agents
  * E-mail monitor (POP)
  * Front-end to web service
  * Text messaging agent
+ * Instant Messaging (IM)
+ * Twitter
 
 Unfinished Business
 ===================
