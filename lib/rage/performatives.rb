@@ -1,6 +1,7 @@
 module RAGE
   
   module Performatives
+    
     ACCEPT_PROPOSAL     = "accept-proposal"
     AGREE               = "agree"
     CANCEL              = "cancel"
@@ -23,6 +24,32 @@ module RAGE
     REQUEST_WHEN        = "request-when"
     REQUEST_WHENEVER    = "request-whenever"
     SUBSCRIBE           = "subscribe"
+    
+    PERFORMATIVES = [
+      ACCEPT_PROPOSAL,
+      AGREE,
+      CANCEL,
+      CFP,
+      CONFIRM,
+      DISCONFIRM,
+      FAILURE,
+      INFORM,
+      INFORM_IF,
+      INFORM_REF,
+      NOT_UNDERSTOOD,
+      PROPAGATE,
+      PROPOSE,
+      PROXY,
+      QUERY_IF,
+      QUERY_REF,
+      REFUSE,
+      REJECT_PROPOSAL,
+      REQUEST,
+      REQUEST_WHEN,
+      REQUEST_WHENEVER,
+      SUBSCRIBE
+    ]
+
   end # module Performatives
 
 end # module RAGE

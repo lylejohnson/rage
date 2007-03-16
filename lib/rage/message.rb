@@ -19,6 +19,8 @@ module RAGE
   # Represents a FIPA ACL message.
   #
   class Message
+    
+    include Performatives
 
   public
 
@@ -97,7 +99,7 @@ module RAGE
     # Set the message performative to the specified value.
     #
     def performative=(p)
-#      raise ArgumentError, "invalid performative: #{p}" unless PERFORMATIVES.include? p
+      raise ArgumentError, "invalid performative: #{p}" unless PERFORMATIVES.include? p
       @performative = p
     end
     
