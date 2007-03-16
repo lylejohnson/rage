@@ -41,8 +41,8 @@ module RAGE
     #
     def decode(src)
       doc = REXML::Document.new(src)
-      msg = Message.new
-      msg.performative = doc.root.attributes["act"]
+      performative = doc.root.attributes["act"]
+      msg = Message.new(:performative => performative)
       msg.conversation_id = doc.root.attributes["conversation-id"]
       receiver_elt = doc.root.elements["receiver"]
       receiver_elt.each_element("agent-identifier") do |aid_elt|

@@ -41,10 +41,10 @@ module RAGE
     private :decode_agent_identifier
 
     def decode(src)
-      msg = Message.new
       parser = NPReader.new
       ast = parser.parse(src)
-      msg.performative = ast.values.shift
+      performative = ast.values.shift
+      msg = Message.new(:performative => performative)
       while !ast.values.empty?
         key   = ast.values.shift
         value = ast.values.shift

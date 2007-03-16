@@ -2,9 +2,9 @@ require 'test/unit'
 require 'rage/stringcodec'
 
 class TC_StringCodec < Test::Unit::TestCase
+  
   def test_encode
-    msg = RAGE::Message.new
-    msg.performative = "request"
+    msg = RAGE::Message.new(:performative => "request")
     msg.sender = RAGE::AgentIdentifier.new(:name => "dummy@foo.com", :addresses => ["iiop://foo.com/acc"])
     msg.receivers << RAGE::AgentIdentifier.new(:name => "ams@foo.com", :addresses => ["iiop://foo.com/acc"])
     msg.language = "fipa-sl0"
@@ -30,5 +30,6 @@ class TC_StringCodec < Test::Unit::TestCase
     assert_equal("fipa-request", msg.protocol)
     assert_equal("fipa-agent-management", msg.ontology)
   end
+  
 end
 
