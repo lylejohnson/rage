@@ -1,3 +1,4 @@
+require 'rage/performatives'
 require 'rage/xmlcodec'
 
 module RAGE
@@ -25,7 +26,7 @@ module RAGE
     # The _performative_ denotes the type of the communicative act of the ACL
     # message. See FIPA00037 for a list of the FIPA standard performatives.
     #
-    attr_accessor :performative
+    attr_reader :performative
     
     #
     # The _sender_ (an AgentIdentifier instance) denotes the identity of the
@@ -73,7 +74,7 @@ module RAGE
     # Return an initialized Message instance.
     #
     def initialize(params={})
-      @performative = params[:performative]
+      self.performative = params[:performative]
       @sender = params[:sender]
       @reply_to = params[:reply_to] || []
       @content = params[:content]
@@ -90,6 +91,14 @@ module RAGE
       else
         @receivers = params[:receivers] || []
       end
+    end
+    
+    #
+    # Set the message performative to the specified value.
+    #
+    def performative=(p)
+#      raise ArgumentError, "invalid performative: #{p}" unless PERFORMATIVES.include? p
+      @performative = p
     end
     
     #
