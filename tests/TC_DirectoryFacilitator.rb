@@ -7,6 +7,8 @@ class TC_DirectoryFacilitator < Test::Unit::TestCase
   
   include FlexMock::TestCase
   
+  private
+  
   def sample_agent_identifier
     agent_identifier = RAGE::AgentIdentifier.new(
       :name => 'cameraproxy1@foo.com',
@@ -37,6 +39,8 @@ class TC_DirectoryFacilitator < Test::Unit::TestCase
     )
   end
   
+  public
+  
   def setup
     mock_logger = flexmock("logger")
     mock_logger.should_receive(:info)
@@ -64,6 +68,15 @@ class TC_DirectoryFacilitator < Test::Unit::TestCase
     @df.modify(entry)
     results = @df.search(RAGE::DFAgentDescription.new(:name => sample_agent_identifier))
     assert_equal(1, results.length)
+  end
+  
+  def test_deregister
+    search_entry = RAGE::DFAgentDescription.new(:name => sample_agent_identifier)
+    results = @df.search(search_entry)
+    assert_equal(1, results.length)
+    @df.deregister(search_entry)
+    results = @df.search(search_entry)
+    assert_equal(0, results.length)
   end
 
 end
