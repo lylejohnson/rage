@@ -50,7 +50,6 @@ class TC_Envelope < Test::Unit::TestCase
     assert_equal("US-ASCII", env.payload_encoding)
     assert_equal(Time.parse("20000508T042651481"), env.date)
 
-    assert_equal(1, env.intended_receivers.length)
     intended_receiver = env.intended_receiver
     assert_equal("intendedreceiver@foobar.com", intended_receiver.name)
     assert_equal(3, intended_receiver.addresses.length)
