@@ -94,6 +94,11 @@ module RAGE
       self == other
     end
     
+    # Return hash value for this agent identifier
+    def hash
+      name.hash
+    end
+    
   end # class AgentIdentifier
   
 end # module RAGE

@@ -1,4 +1,5 @@
 require 'logger'
+require 'rage/exceptions'
 require 'thread'
 
 module RAGE
@@ -150,7 +151,7 @@ module RAGE
           @entries[agent_description.name] = agent_description
           logger.info "Registered agent capabilities for #{agent_description.name.name}"
         else
-          raise FailureException.new("already-registered")
+          raise FailureError.new("already-registered")
         end
       end
     end
@@ -160,7 +161,7 @@ module RAGE
         if @entries.key? agent_description.name
           @entries.delete(agent_description.name)
         else
-          raise FailureException.new("not-registered")
+          raise FailureError.new("not-registered")
         end
       end
     end
@@ -168,9 +169,9 @@ module RAGE
     def modify(agent_description)
       @entries_mutex.synchronize do
         if @entries.key? agent_description.name
-          @entires[agent_description.name] = agent_description
+          @entries[agent_description.name] = agent_description
         else
-          raise FailureException.new("not-registered")
+          raise FailureError.new("not-registered")
         end
       end
     end

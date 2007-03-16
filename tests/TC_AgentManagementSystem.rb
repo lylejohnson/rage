@@ -1,8 +1,11 @@
-require 'test/unit'
+require 'flexmock'
 require 'rage/aid'
 require 'rage/df'
+require 'test/unit'
 
 class TC_AgentManagementSystem < Test::Unit::TestCase
+  
+  include FlexMock::TestCase
   
   def setup
     agent_identifier = RAGE::AgentIdentifier.new(
@@ -29,7 +32,9 @@ class TC_AgentManagementSystem < Test::Unit::TestCase
       :ontologies => [ 'traffic-surveillance-domain', 'fipa-agent-management' ],
       :languages => [ 'fipa-sl' ]
     )
-    @df = RAGE::DirectoryFacilitator.new
+    mock_logger = flexmock("logger")
+    mock_logger.should_receive(:info)
+    @df = RAGE::DirectoryFacilitator.new(:logger => mock_logger)
     @df.register(entry)
   end
 
