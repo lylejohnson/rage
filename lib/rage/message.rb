@@ -99,6 +99,7 @@ module RAGE
     # Set the message performative to the specified value.
     #
     def performative=(p)
+      raise ArgumentError, "empty or nil performative" if p.nil? || p == ""
       raise ArgumentError, "invalid performative: #{p}" unless PERFORMATIVES.include? p
       @performative = p
     end
