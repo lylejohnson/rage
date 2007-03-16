@@ -8,7 +8,7 @@ module RAGE
     #
     # Return an initialized agent identifier.
     #
-    def initialize(params)
+    def initialize(params={})
       @name = params[:name]
       @addresses = params[:addresses] || []
       @resolvers = params[:resolvers] || []
@@ -82,6 +82,16 @@ module RAGE
         end
         return false unless this_pattern_matched
       end
+    end
+    
+    # Return true if these two agent identifiers are equal
+    def ==(other)
+      return name == other.name
+    end
+    
+    # Return true if these two agent identifiers are equal
+    def eql?(other)
+      self == other
     end
     
   end # class AgentIdentifier
