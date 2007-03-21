@@ -109,7 +109,7 @@ module RAGE
       ams.invoke_all_agents
       
       # Start the dashboard
-      start_dashboard
+#     start_dashboard
     end
     
     def hostname
