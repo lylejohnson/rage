@@ -1,4 +1,5 @@
 require 'rage/message_helper'
+require 'rage/jena'
 
 require 'thread'
 
@@ -50,6 +51,9 @@ module RAGE
     
     # The owner of this agent (a string)
     attr_reader :owner
+    
+    # The RDF model for this agent
+    attr_reader :model
 
     #
     # Return an initialized Agent instance.
@@ -73,6 +77,7 @@ module RAGE
       )
       ams.register(agent_description, self)
       @messages = Queue.new
+      @model = RAGE::Jena::ModelFactory.createDefaultModel
     end
     
     # Return the name for this agent
@@ -93,6 +98,7 @@ module RAGE
         :date => Time.now
       )
       acc.send_message(envelope, msg)
+      logger.info "Agent #{aid} sent message to receivers: #{receivers}"
     end
     
     #
@@ -144,11 +150,25 @@ module RAGE
       end
     end
     
+    #
+    # Transform a performative name like "query-ref" into a method name (symbol),
+    # replacing any dashes with underscores.
+    #
+    # Examples:
+    #
+    #     performative_handler("inform")     => :handle_inform
+    #     performative_handler("query-ref")  => :handle_query_ref
+    #
     def performative_handler(performative)
-      "handle_#{performative}".to_sym
+      "handle_#{performative.gsub(/-/, '_')}".to_sym
     end
     
-    # Handle a message
+    private :performative_handler
+    
+    #
+    # Default handler for a message if no suitable performative
+    # handler was found in the receiver object.
+    #
     def handle_message(msg)
       logger.info "Agent #{name} asked to handle message"
     end
