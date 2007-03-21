@@ -86,6 +86,7 @@ module RAGE
     # field (more than one agent can be specified as message receiver).
     #
     def send_message(msg)
+      msg.sender = aid if msg.sender.nil?
       envelope = RAGE::Envelope.new(
         :sender => aid,
         :receivers => msg.receivers,

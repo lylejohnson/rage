@@ -61,7 +61,6 @@ class Sam < RAGE::Agent
   def contact_booksellers(agent_descriptions)
     msg = RAGE::Message.new(
       :performative => "query", 
-      :sender => aid,
       :receivers => agent_descriptions.map { |x| x.name },
       :content => "content goes here"
     )
