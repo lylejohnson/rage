@@ -31,12 +31,33 @@ module RAGE
     def initialize(params={})
       @name = params[:name]
       @type = params[:type]
-      @protocols = params[:protocols] || []
-      @ontologies = params[:ontologies] || []
-      @languages = params[:languages] || []
+      if params.key? :protocol
+        @protocols = [ params[:protocol] ]
+      else
+        @protocols = params[:protocols] || []
+      end
+      if params.key? :ontology
+        @ontologies = [ params[:ontology] ]
+      else
+        @ontologies = params[:ontologies] || []
+      end
+      if params.key? :language
+        @languages = [ params[:language] ]
+      else
+        @languages = params[:languages] || []
+      end
       @ownership = params[:ownership] || []
       @properties = params[:properties] || {}
     end
+    
+    # Return the first ontology associated with this service description, if any.
+    def ontology; ontologies.first; end
+    
+    # Return the first language associated with this service description, if any.
+    def language; languages.first; end
+    
+    # Return the first protocol associated with this service description, if any.
+    def protocol; protocols.first; end
     
     # Return +true+ if this service description matches the pattern.
     def matches?(pattern)
@@ -143,8 +164,21 @@ module RAGE
       @entries_mutex = Mutex.new
     end
 
-    # Register an agent's capabilities, where _entry_ is a DF
-    # Agent Description.
+    #
+    # Register an agent's capabilities.
+    #
+    # Example:
+    #
+    #   service = ServiceDescription.new(
+    #     :name => "Bob's Books",
+    #     :type => "bookseller"
+    #   )
+    #   agent_description = DFAgentDescription.new(
+    #     :name => aid,
+    #     :services => [ service ]
+    #   )
+    #   df.register(agent_description)
+    #
     def register(agent_description)
       @entries_mutex.synchronize do
         unless @entries.key? agent_description.name
