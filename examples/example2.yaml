@@ -1,0 +1,8 @@
+-
+    name: AskAgent
+    src: example2.rb
+    classname: AskAgent
+-
+    name: AnswerAgent
+    src: example2.rb
+    classname: AnswerAgent
