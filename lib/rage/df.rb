@@ -111,13 +111,42 @@ module RAGE
     # Return an initialized DFAgentDescription instance
     def initialize(params={})
       @name = params[:name]
-      @services = params[:services] || []
-      @protocols = params[:protocols] || []
-      @ontologies = params[:ontologies] || []
-      @languages = params[:languages] || []
+      if params.key? :service
+        @services = [ params[:service] ]
+      else
+        @services = params[:services] || []
+      end
+      if params.key? :protocol
+        @protocols = [ params[:protocol] ]
+      else
+        @protocols = params[:protocols] || []
+      end
+      if params.key? :ontology
+        @ontologies = [ params[:ontology] ]
+      else
+        @ontologies = params[:ontologies] || []
+      end
+      if params.key? :language
+        @languages = [ params[:language] ]
+      else
+        @languages = params[:languages] || []
+      end
       @lease_time = params[:lease_time]
     end
+    
+    # Return the first service associated with this agent description, if any.
+    def service; services.first; end
+    
+    # Return the first protocol associated with this agent description, if any.
+    def protocol; protocols.first; end
+    
+    # Return the first ontology associated with this agent description, if any.
+    def ontology; ontologies.first; end
+    
+    # Return the first language associated with this agent description, if any.
+    def language; languages.first; end
 
+    # Return true if this agent description matches the provided pattern
     def matches?(pattern)
       return false if (pattern.name && !self.name.matches?(pattern.name))
       pattern.services.each do |service_pattern|
