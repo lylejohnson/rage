@@ -56,9 +56,15 @@ module RAGE
           :ams => ams
         )
       else
+        logger.debug "Obtaining reference to main container AMS..."
         @ams = main_container.ams
-        @df = main_container.df
+        logger.debug "Done obtaining reference to main container AMS."
+        logger.debug "Obtaining reference to main container DF..."
+        @df = main_container.df # FIXME: broken as of JRuby 0.9.8: see http://jira.codehaus.org/browse/JRUBY-572
+        logger.debug "Done obtaining reference to main container DF."
+        logger.debug "Obtaining reference to main container ACC..."
         @acc = main_container.acc
+        logger.debug "Done obtaining reference to main container ACC."
       end
       @config = params[:config] || "rage.yaml"
     end
