@@ -4,6 +4,7 @@ module RAGE
   
   module Jena
     
+    include_class 'com.hp.hpl.jena.db.DBConnection'
     include_class 'com.hp.hpl.jena.rdf.model.ModelFactory'
     
   end # module Jena
