@@ -1,4 +1,3 @@
-require 'drb'
 require 'thread'
 require 'uri'
 
@@ -27,20 +26,8 @@ module RAGE
       @ams = params[:ams]
       @buffered_messages = []
       @mutex = Mutex.new
-      start
     end
     
-    #
-    # Start a DRb server for this
-    #
-    def start
-      DRb.start_service("druby://localhost:9001", self)
-    end
-    
-    def stop
-      DRb.thread.join
-    end
-
     #
     # Send the following envelope and payload
     #
@@ -159,11 +146,11 @@ module RAGE
   class DRbTransportProtocol
 
     def initialize(uri)
-      @server = DRbObject.new(nil, uri)
+      @container = DRbObject.new(nil, uri)
     end
     
     def send_message(envelope, payload)
-      @server.send_message(envelope, payload)
+      @container.acc.send_message(envelope, payload)
     end
 
   end # class DRbTransportProtocol

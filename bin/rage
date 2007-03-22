@@ -1,12 +1,43 @@
 #!/usr/bin/env ruby
 
-require File.join(File.dirname(__FILE__), "../lib/rage/version")
+require 'getoptlong'
+require File.join(File.dirname(__FILE__), "../lib/rage/rage")
 
-if %w(--version -v).include? ARGV.first
-  puts "RAGE #{RAGE::VERSION::STRING}"
-  exit 0
+opts = GetoptLong.new(
+  [ "--container",      GetoptLong::NO_ARGUMENT ],
+  [ "--host",           GetoptLong::REQUIRED_ARGUMENT ],
+  [ "--port",           GetoptLong::REQUIRED_ARGUMENT ],
+  [ "--local-host",     GetoptLong::REQUIRED_ARGUMENT ],
+  [ "--local-port",     GetoptLong::REQUIRED_ARGUMENT ],
+  [ "--container-name", GetoptLong::REQUIRED_ARGUMENT ],
+  [ "--help",           GetoptLong::NO_ARGUMENT ],
+  [ "--version", "-v",  GetoptLong::NO_ARGUMENT ]
+)
+
+params = {}
+opts.each do |opt, arg|
+  case opt
+  when "--version"
+    puts "RAGE #{RAGE::VERSION::STRING}"
+    exit 0
+  when "--help"
+    show_help
+    exit 0
+  when "--container"
+    params[:container] = true
+  when "--host"
+    params[:host] = arg
+  when "--port"
+    params[:port] = arg
+  when "--local-host"
+    params[:local_host] = arg
+  when "--local-port"
+    params[:local_port] = arg
+  when "--container-name"
+    params[:container_name] = arg
+  else
+    raise RuntimeError, "Unrecognized option: #{opt}"
+  end
 end
 
-require File.join(File.dirname(__FILE__), "../lib/rage/generators/application")
-
-RAGE::Generators::ApplicationGenerator.new.run(ARGV)
+RAGE::Container.new(params).run

@@ -56,7 +56,7 @@ class Sam < RAGE::Agent
   
   def contact_booksellers(agent_descriptions)
     msg = RAGE::Message.new(
-      :performative => "query", 
+      :performative => "query-if", 
       :receivers => agent_descriptions.map { |x| x.name },
       :content => "content goes here"
     )
@@ -67,7 +67,7 @@ end
 
 if __FILE__ == $0
   
-  RAGE::Platform.new(:config => "example.yaml").run
-  Thread.list.each { |t| t.join if t != Thread.main }
+  Thread.abort_on_exception = true
+  RAGE::Container.new(:container => true, :config => "example.yaml").run
  
 end

@@ -1,5 +1,5 @@
 require 'rage/message_helper'
-require 'rage/jena'
+# require 'rage/jena'
 
 require 'thread'
 
@@ -77,17 +77,19 @@ module RAGE
       )
       ams.register(agent_description, self)
       @messages = Queue.new
-      @model = create_model
+#      @model = create_model
     end
     
     def create_model
-#     RAGE::Jena::ModelFactory.createDefaultModel
+      RAGE::Jena::ModelFactory.createDefaultModel
+=begin
       java.lang.Class.forName("com.mysql.jdbc.Driver")
       conn = RAGE::Jena::DBConnection.new("jdbc:mysql://localhost/test", "root", "PochPogs", "MySQL")
       maker = RAGE::Jena::ModelFactory.createModelRDBMaker(conn)
       model = maker.createDefaultModel
       conn.close
       model
+=end
     end
     
     # Return the name for this agent

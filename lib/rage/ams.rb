@@ -77,6 +77,7 @@ module RAGE
       @agent_descriptions = {}
       @mutex = Mutex.new
       @logger = params[:logger] || Logger.new(STDOUT)
+      @addresses = params[:addresses]
     end
     
     def hostname
@@ -144,7 +145,7 @@ module RAGE
               APService.new(
                 :name => "MyDRbMTP",
                 :type => "druby",
-                :addresses => [ "druby://localhost:9001" ]
+                :addresses => @addresses
               )
             ]
           )
@@ -167,8 +168,10 @@ module RAGE
       agents = nil
       @mutex.synchronize { agents = @agents.dup }
       agents.each_value do |agent|
-        agent.invoke
-        Thread.new { agent.run }
+        unless agent.active?
+          agent.invoke
+          Thread.new { agent.run }
+        end
       end
     end
     
