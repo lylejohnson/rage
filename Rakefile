@@ -5,6 +5,13 @@ require 'rake/testtask'
 SAXON = "java -jar /Users/lyle/saxon-6.5.5/saxon.jar"
 HTML_STYLESHEET = "custom-html.xsl"
 
+desc "Generate the user documentation"
+task :doc do
+  cd "doc"
+  sh "#{SAXON} book.xml #{HTML_STYLESHEET}"
+  cd ".."
+end
+
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = "doc/api"
 # rdoc.main = "rdoc-sources/README.rdoc"
@@ -18,8 +25,3 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-desc "Generate the user documentation"
-task :doc do
-  cd "doc"
-  system "#{SAXON} book.xml #{HTML_STYLESHEET}"
-end

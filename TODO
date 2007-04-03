@@ -20,11 +20,29 @@ Kinds of Agents
 ===============
 
  * News feed monitor (RSS/Atom)
- * E-mail monitor (POP)
+ * E-mail monitor (POP) or sender (SMTP)
  * Front-end to web service
  * Text messaging agent
  * Instant Messaging (IM)
  * Twitter
+ * Google Calendar Agent
+ * Exchange Server Agent
+ * Apple iCal Agent
+ * Personal Shopper Agent
+ * Upcoming.org Agent
+ * Travel Agent (airline schedules & reservations; hotel listings & reservations; ???)
+ * Movie Listings
+ * Movie Information (IMDb)
+ * Conferences & Speakers
+ * LinkedIn Agent (?)
+ * Weather
+ * Google Maps Agent
+ * iTunes
+ * iPhoto
+ * flickr Agent
+ * Picasa Agent
+ * Sports scores & statistics
+ * Automobile makes & models
 
 Unfinished Business
 ===================
