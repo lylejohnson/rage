@@ -1,0 +1,8 @@
+<preface>
+	<title>Introduction</title>
+	<para><acronym>RAGE</acronym> (the Ruby Agent Environment) is a Ruby-based development platform
+		for developing intelligent, multi-agent based software applications.
+		Although <acronym>RAGE</acronym> is not a <acronym>FIPA</acronym>-compliant system, it does
+		borrow a lot of terminology and other ideas from the <acronym>FIPA</acronym> specifications.
+	</para>
+</preface>

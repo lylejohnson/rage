@@ -3,7 +3,11 @@
 	PUBLIC "-//OASIS//DTD DocBook V5.0//EN"
 	"file:/Users/lyle/docbook/xml/5.0/dtd/docbook.dtd" [
 <!ENTITY bookinfo SYSTEM "bookinfo.xml">
+<!ENTITY commands SYSTEM "commands.xml">
+<!ENTITY introduction SYSTEM "introduction.xml">
 ]>
 <book id="book" lang="en" xslns="http://docbook.org/ns/docbook" version="5.0">
 &bookinfo;
+&introduction;
+&commands;
 </book>

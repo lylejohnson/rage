@@ -3,6 +3,10 @@
 require 'getoptlong'
 require File.join(File.dirname(__FILE__), "../lib/rage/rage")
 
+def show_help
+  puts "This would be a good place to put a help message." # FIXME
+end
+
 opts = GetoptLong.new(
   [ "--container",      GetoptLong::NO_ARGUMENT ],
   [ "--host",           GetoptLong::REQUIRED_ARGUMENT ],

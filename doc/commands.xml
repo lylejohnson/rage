@@ -1,0 +1,43 @@
+<chapter id="commands">
+	<title>Using the <acronym>RAGE</acronym> command-line tools</title>
+	<para>This chapter describes the various command-line tools that are a part of <acronym>RAGE</acronym>
+		and how to use them.</para>
+	<simplesect>
+		<title>The <command>rage</command> command</title>
+		<para>The <command>rage</command> command is used to either create a new main agent container for an agent platform,
+			or to create a new (non-main) container and associate it with an already running main container.</para>
+		<para>To create a new main agent container (and thus a new agent platform), use this form of the command:</para>
+		<cmdsynopsis>
+			<command>rage</command>
+			<arg>--container-name <replaceable>name</replaceable></arg>
+			<arg>--local-host <replaceable>hostname</replaceable></arg>
+			<arg>--local-port <replaceable>port</replaceable></arg>
+		</cmdsynopsis>
+		<para>All three of these arguments are optional. If no container name is specified for the main container, it
+			will be assigned the default name of "Main-Container". The default hostname and port for this container will
+			be "localhost" and 9001, respectively.
+		</para>
+		<para>To instead create a new container, and association it with an existing main container, use this
+			form of the command:</para>
+		<cmdsynopsis>
+			<command>rage</command>
+			<arg choice="req">--container</arg>
+			<arg>--container-name <replaceable>name</replaceable></arg>
+			<arg>--host <replaceable>hostname</replaceable></arg>
+			<arg>--port <replaceable>port</replaceable></arg>
+		</cmdsynopsis>
+		<para>Note that in this case, the <parameter>--container</parameter> argument is required. If no container name
+			is specified, a default name like "Container-1" will be assigned to the new container.
+			The <parameter>hostname</parameter> and <parameter>port</parameter> arguments here are for the main container,
+			not the newly created non-main container. If not specified, they will default to "localhost" and 9001.</para>
+		<para>You can get a brief summary of the command line arguments for the <command>rage</command> command by passing
+			the <parameter>--help</parameter> argument:</para>
+		<screen>
+pepper:~ lyle$ <emphasis role="bold">rage --help</emphasis>
+This would be a good place to put a help message.</screen>
+		<para>Finally, you can check the <acronym>RAGE</acronym> version number by passing the <parameter>--version</parameter> argument:</para>
+		<screen>
+pepper:~ lyle$ <emphasis role="bold">rage --version</emphasis>
+RAGE 0.0.1</screen>
+	</simplesect>
+</chapter>
