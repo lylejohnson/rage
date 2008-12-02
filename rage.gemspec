@@ -8,8 +8,8 @@ spec = Gem::Specification.new do |s|
   s.summary = "Ruby Agent Environment"
   
   s.author = "Lyle Johnson"
-  s.email = "ljohnson@sentar.com"
-  s.homepage = "http://www.sentar.com/"
+  s.email = "lyle@lylejohnson.name"
+  s.homepage = "http://github.com/lylejohnson/rage/tree/master/"
 
   s.files  = Dir["bin/*"]
   s.files += Dir["doc/*"]
